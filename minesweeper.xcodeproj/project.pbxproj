@@ -12,6 +12,8 @@
 		CE0D60E61CBE40AA00B95609 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E41CBE40AA00B95609 /* Main.storyboard */; };
 		CE0D60E81CBE40AA00B95609 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E71CBE40AA00B95609 /* Assets.xcassets */; };
 		CE0D60EB1CBE40AA00B95609 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E91CBE40AA00B95609 /* LaunchScreen.storyboard */; };
+		CE0D60F31CBE41B900B95609 /* MinesweeperGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */; };
+		CE0D60F51CBE5C4600B95609 /* MineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D60F41CBE5C4600B95609 /* MineCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		CE0D60E71CBE40AA00B95609 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0D60EA1CBE40AA00B95609 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0D60EC1CBE40AA00B95609 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinesweeperGame.swift; sourceTree = "<group>"; };
+		CE0D60F41CBE5C4600B95609 /* MineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,8 @@
 				CE0D60E71CBE40AA00B95609 /* Assets.xcassets */,
 				CE0D60E91CBE40AA00B95609 /* LaunchScreen.storyboard */,
 				CE0D60EC1CBE40AA00B95609 /* Info.plist */,
+				CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */,
+				CE0D60F41CBE5C4600B95609 /* MineCell.swift */,
 			);
 			path = minesweeper;
 			sourceTree = "<group>";
@@ -138,6 +144,8 @@
 			files = (
 				CE0D60E31CBE40AA00B95609 /* ViewController.swift in Sources */,
 				CE0D60E11CBE40AA00B95609 /* AppDelegate.swift in Sources */,
+				CE0D60F51CBE5C4600B95609 /* MineCell.swift in Sources */,
+				CE0D60F31CBE41B900B95609 /* MinesweeperGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
