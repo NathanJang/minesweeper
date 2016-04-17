@@ -8,24 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		CE0D60E11CBE40AA00B95609 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D60E01CBE40AA00B95609 /* AppDelegate.swift */; };
-		CE0D60E31CBE40AA00B95609 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D60E21CBE40AA00B95609 /* ViewController.swift */; };
 		CE0D60E61CBE40AA00B95609 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E41CBE40AA00B95609 /* Main.storyboard */; };
 		CE0D60E81CBE40AA00B95609 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E71CBE40AA00B95609 /* Assets.xcassets */; };
 		CE0D60EB1CBE40AA00B95609 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E91CBE40AA00B95609 /* LaunchScreen.storyboard */; };
 		CE0D60F31CBE41B900B95609 /* MinesweeperGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */; };
 		CE0D60F51CBE5C4600B95609 /* MineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D60F41CBE5C4600B95609 /* MineCell.swift */; };
+		CEF1F5BC1CC29F6F00733358 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF1F5BB1CC29F6F00733358 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CE0D60DD1CBE40AA00B95609 /* minesweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minesweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0D60E01CBE40AA00B95609 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CE0D60E21CBE40AA00B95609 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CE0D60E51CBE40AA00B95609 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE0D60E71CBE40AA00B95609 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0D60EA1CBE40AA00B95609 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0D60EC1CBE40AA00B95609 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinesweeperGame.swift; sourceTree = "<group>"; };
 		CE0D60F41CBE5C4600B95609 /* MineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineCell.swift; sourceTree = "<group>"; };
+		CEF1F5BB1CC29F6F00733358 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				CE0D60E01CBE40AA00B95609 /* AppDelegate.swift */,
-				CE0D60E21CBE40AA00B95609 /* ViewController.swift */,
+				CEF1F5BB1CC29F6F00733358 /* ViewController.swift */,
 				CE0D60E41CBE40AA00B95609 /* Main.storyboard */,
 				CE0D60E71CBE40AA00B95609 /* Assets.xcassets */,
 				CE0D60E91CBE40AA00B95609 /* LaunchScreen.storyboard */,
@@ -142,9 +142,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE0D60E31CBE40AA00B95609 /* ViewController.swift in Sources */,
 				CE0D60E11CBE40AA00B95609 /* AppDelegate.swift in Sources */,
 				CE0D60F51CBE5C4600B95609 /* MineCell.swift in Sources */,
+				CEF1F5BC1CC29F6F00733358 /* ViewController.swift in Sources */,
 				CE0D60F31CBE41B900B95609 /* MinesweeperGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -301,6 +301,7 @@
 				CE0D60F11CBE40AA00B95609 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
