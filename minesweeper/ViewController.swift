@@ -94,7 +94,7 @@ class ViewController: UIViewController {
             button.tag = i
             self.buttons.append(button)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.addTarget(self, action: #selector(revealNeighboringCells(_:)), forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(didTapButton(_:event:)), forControlEvents: .TouchUpInside)
             gameView.addSubview(button)
             let xConstraint, yConstraint, widthConstraint, heightConstraint: NSLayoutConstraint
             if i % MinesweeperGame.size == 0 {
@@ -152,13 +152,17 @@ class ViewController: UIViewController {
     }
     
     var numberOfRemainingCells = 0
+    
+    func didTapButton(sender: UIButton, event: UIControlEvents) {
+        revealNeighboringCells(sender)
+    }
 
-    func revealNeighboringCells(sender: UIButton) {
-        let i = sender.tag / MinesweeperGame.size
-        let j = sender.tag % MinesweeperGame.size
+    func revealNeighboringCells(button: UIButton) {
+        let i = button.tag / MinesweeperGame.size
+        let j = button.tag % MinesweeperGame.size
         // if the cell is already revealed, don't do anything
         if !game!.finished && !game!.revealedCells[i][j] {
-            revealCell(sender)
+            revealCell(button)
 //            game!.revealedCells[i][j] = true
             numberOfRemainingCells -= 1
             // if all non-mine cells are revealed, win
@@ -213,35 +217,35 @@ class ViewController: UIViewController {
                 if game!.numberOfMinesNear(row: i, column: j)! == 0 {
                     if i > 0 {
                         // north
-                        revealNeighboringCells(self.buttons[sender.tag - MinesweeperGame.size])
+                        revealNeighboringCells(self.buttons[button.tag - MinesweeperGame.size])
                     }
                     if j > 0 {
                         // west
-                        revealNeighboringCells(self.buttons[sender.tag - 1])
+                        revealNeighboringCells(self.buttons[button.tag - 1])
                     }
                     if i < MinesweeperGame.size - 1 {
                         // south
-                        revealNeighboringCells(self.buttons[sender.tag + MinesweeperGame.size])
+                        revealNeighboringCells(self.buttons[button.tag + MinesweeperGame.size])
                     }
                     if j < MinesweeperGame.size - 1 {
                         // east
-                        revealNeighboringCells(self.buttons[sender.tag + 1])
+                        revealNeighboringCells(self.buttons[button.tag + 1])
                     }
                     if i > 0 && j > 0 {
                         // northwest
-                        revealNeighboringCells(self.buttons[sender.tag - MinesweeperGame.size - 1])
+                        revealNeighboringCells(self.buttons[button.tag - MinesweeperGame.size - 1])
                     }
                     if i < MinesweeperGame.size - 1 && j > 0 {
                         // southwest
-                        revealNeighboringCells(self.buttons[sender.tag + MinesweeperGame.size - 1])
+                        revealNeighboringCells(self.buttons[button.tag + MinesweeperGame.size - 1])
                     }
                     if i > 0 && j < MinesweeperGame.size - 1 {
                         // northeast
-                        revealNeighboringCells(self.buttons[sender.tag - MinesweeperGame.size + 1])
+                        revealNeighboringCells(self.buttons[button.tag - MinesweeperGame.size + 1])
                     }
                     if i < MinesweeperGame.size - 1 && j < MinesweeperGame.size - 1 {
                         // southeast
-                        revealNeighboringCells(self.buttons[sender.tag + MinesweeperGame.size + 1])
+                        revealNeighboringCells(self.buttons[button.tag + MinesweeperGame.size + 1])
                     }
                 }
             }
