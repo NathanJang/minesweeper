@@ -10,74 +10,17 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    /// The current game.
     var game: MinesweeperGame?
-//    var cells: [[MineCell]] = [[MineCell]]()
+    
+    /// An array of the cells in the game, in row-major format.
     var buttons = [UIButton]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-//        let gameView = UIView()
-//        gameView.translatesAutoresizingMaskIntoConstraints = false
-//        self.view.addSubview(gameView)
-//        gameView.frame.size = CGSize(width: self.view.frame.width, height: self.view.frame.width)
-//        let constraintCenterX = NSLayoutConstraint(item: gameView, attribute: .CenterX, relatedBy: .Equal, toItem: self.view, attribute: .CenterX, multiplier: 1, constant: 0)
-//        let constraintCenterY = NSLayoutConstraint(item: gameView, attribute: .CenterY, relatedBy: .Equal, toItem: self.view, attribute: .CenterY, multiplier: 1, constant: 0)
-//        let constraintWidth = NSLayoutConstraint(item: gameView, attribute: .Width, relatedBy: .Equal, toItem: self.view, attribute: .Width, multiplier: 1, constant: 0)
-//        let constraintHeight = NSLayoutConstraint(item: gameView, attribute: .Height, relatedBy: .Equal, toItem: self.view, attribute: .Width, multiplier: 1, constant: 0)
-//        self.view.addConstraints([constraintCenterX, constraintCenterY, constraintWidth, constraintHeight])
-//        
-//        cells.append([MineCell]())
-//        let cell0 = MineCell(row: 0, column: 0)
-//        cells[0].append(cell0)
-//        cell0.buttonView.translatesAutoresizingMaskIntoConstraints = false
-//        cell0.buttonView.addTarget(self, action: #selector(revealCell(_:)), forControlEvents: .TouchUpInside)
-//        gameView.addSubview(cell0.buttonView)
-//        let widthConstraint = NSLayoutConstraint(item: cell0.buttonView, attribute: .Width, relatedBy: .Equal, toItem: gameView, attribute: .Width, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-//        let heightConstraint = NSLayoutConstraint(item: cell0.buttonView, attribute: .Height, relatedBy: .Equal, toItem: gameView, attribute: .Height, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-//        let xConstraint = NSLayoutConstraint(item: cell0.buttonView, attribute: .Left, relatedBy: .Equal, toItem: gameView, attribute: .Left, multiplier: 1, constant: 0)
-//        let yConstraint = NSLayoutConstraint(item: cell0.buttonView, attribute: .Top, relatedBy: .Equal, toItem: gameView, attribute: .Top, multiplier: 1, constant: 0)
-//        gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
-//        for column in 1..<MinesweeperGame.size {
-//            let cell = MineCell(row: 0, column: column)
-//            cells[0].append(cell)
-//            cell.buttonView.translatesAutoresizingMaskIntoConstraints = false
-//            cell.buttonView.addTarget(self, action: #selector(revealCell(_:)), forControlEvents: .TouchUpInside)
-//            gameView.addSubview(cell.buttonView)
-//            let widthConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Width, relatedBy: .Equal, toItem: gameView, attribute: .Width, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-//            let heightConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Height, relatedBy: .Equal, toItem: gameView, attribute: .Height, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-//            let xConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Left, relatedBy: .Equal, toItem: cells[0][column - 1].buttonView, attribute: .Right, multiplier: 1, constant: 0)
-//            let yConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Top, relatedBy: .Equal, toItem: gameView, attribute: .Top, multiplier: 1, constant: 0)
-//            gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
-//        }
-//        
-//        for row in 1..<MinesweeperGame.size {
-//            cells.append([MineCell]())
-//            let cell = MineCell(row: row, column: 0)
-//            cells[row].append(cell)
-//            cell.buttonView.translatesAutoresizingMaskIntoConstraints = false
-//            cell.buttonView.addTarget(self, action: #selector(revealCell(_:)), forControlEvents: .TouchUpInside)
-//            gameView.addSubview(cell.buttonView)
-//            let widthConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Width, relatedBy: .Equal, toItem: gameView, attribute: .Width, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-//            let heightConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Height, relatedBy: .Equal, toItem: gameView, attribute: .Height, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-//            let xConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Left, relatedBy: .Equal, toItem: gameView, attribute: .Left, multiplier: 1, constant: 0)
-//            let yConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Top, relatedBy: .Equal, toItem: cells[row - 1][0].buttonView, attribute: .Bottom, multiplier: 1, constant: 0)
-//            gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
-//            for column in 1..<MinesweeperGame.size {
-//                let cell = MineCell(row: row, column: column)
-//                cells[row].append(cell)
-//                cell.buttonView.translatesAutoresizingMaskIntoConstraints = false
-//                cell.buttonView.addTarget(self, action: #selector(revealCell(_:)), forControlEvents: .TouchUpInside)
-//                gameView.addSubview(cell.buttonView)
-//                let widthConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Width, relatedBy: .Equal, toItem: gameView, attribute: .Width, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-//                let heightConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Height, relatedBy: .Equal, toItem: gameView, attribute: .Height, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-//                let xConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Left, relatedBy: .Equal, toItem: cells[row][column - 1].buttonView, attribute: .Right, multiplier: 1, constant: 0)
-//                let yConstraint = NSLayoutConstraint(item: cell.buttonView, attribute: .Top, relatedBy: .Equal, toItem: cells[row - 1][column].buttonView, attribute: .Bottom, multiplier: 1, constant: 0)
-//                gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
-//            }
-//        }
-        
+        /// The superview for all game cells, a square with the same width as `self.view` and centered.
         let gameView = UIView()
         gameView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(gameView)
@@ -88,7 +31,7 @@ class ViewController: UIViewController {
         let heightConstraint = NSLayoutConstraint(item: gameView, attribute: .Height, relatedBy: .Equal, toItem: self.view, attribute: .Width, multiplier: 1, constant: 0)
         self.view.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
         
-        // initialize buttons and store in `self.buttons`
+        // Initialize buttons and store in `self.buttons`.
         for i in 0..<MinesweeperGame.size * MinesweeperGame.size {
             let button = UIButton(type: .System)
             button.tag = i
@@ -98,15 +41,17 @@ class ViewController: UIViewController {
             gameView.addSubview(button)
             let xConstraint, yConstraint, widthConstraint, heightConstraint: NSLayoutConstraint
             if i % MinesweeperGame.size == 0 {
-                // column 0
+                // If it's column 0, align it to the left of `gameView`.
                 xConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: gameView, attribute: .Left, multiplier: 1, constant: 0)
             } else {
+                // Otherwise, put it next to the previous cell.
                 xConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: self.buttons[i - 1], attribute: .Right, multiplier: 1, constant: 0)
             }
             if i / MinesweeperGame.size == 0 {
-                // row 0
+                // If it's row 0, align it to the top of `gameView`.
                 yConstraint = NSLayoutConstraint(item: button, attribute: .Top, relatedBy: .Equal, toItem: gameView, attribute: .Top, multiplier: 1, constant: 0)
             } else {
+                // Otherwise, put it next to the cell in the same column in the previous row.
                 yConstraint = NSLayoutConstraint(item: button, attribute: .Top, relatedBy: .Equal, toItem: buttons[i - MinesweeperGame.size], attribute: .Bottom, multiplier: 1, constant: 0)
             }
             widthConstraint = NSLayoutConstraint(item: button, attribute: .Width, relatedBy: .Equal, toItem: gameView, attribute: .Width, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
@@ -114,36 +59,26 @@ class ViewController: UIViewController {
             gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
         }
         
-        initGame()
+        initializeGame()
         
+        /// A button that loads a new game.
         let resetButton = UIButton(type: .System)
         resetButton.setTitle("Reset", forState: .Normal)
         resetButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(resetButton)
         self.view.addConstraints([NSLayoutConstraint(item: resetButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: 0), NSLayoutConstraint(item: resetButton, attribute: .CenterX, relatedBy: .Equal, toItem: self.view, attribute: .CenterX, multiplier: 1, constant: 0)])
-        resetButton.addTarget(self, action: #selector(initGame), forControlEvents: .TouchUpInside)
+        resetButton.addTarget(self, action: #selector(initializeGame), forControlEvents: .TouchUpInside)
     }
     
-    func initGame() {
+    /// Loads a new game.
+    func initializeGame() {
         print("Renewing game")
-        game = MinesweeperGame()
-//        for i in 0..<MinesweeperGame.size {
-//            for j in 0..<MinesweeperGame.size {
-//                cells[row][column].isRevealed = false
-//                cells[row][column].hasMine = game!.hasMine(row: row, column: column)!
-//                cells[row][column].numberOfMinesNearby = game!.numberOfMinesNear(row: row, column: column)!
-//            }
-//        }
-//        for i in 0..<self.buttons.count {
-//            self.buttons[i]
-//        }
+        self.game = MinesweeperGame()
         for button in self.buttons {
             print("Resetting button at row \(button.tag / MinesweeperGame.size) column \(button.tag % MinesweeperGame.size)")
+            // Non-revealed buttons show "-".
             button.setTitle("-", forState: .Normal)
         }
-//        for i in
-        
-        numberOfRemainingCells = MinesweeperGame.size * MinesweeperGame.size
     }
 
     override func didReceiveMemoryWarning() {
@@ -151,69 +86,41 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    var numberOfRemainingCells = 0
-    
     func didTapButton(sender: UIButton, event: UIControlEvents) {
         revealNeighboringCells(sender)
     }
 
+    /// Recursively reveal neighboring cells.
+    /// If a cell has 0 mines nearby, recursively reveal the surrounding cells.
     func revealNeighboringCells(button: UIButton) {
         let i = button.tag / MinesweeperGame.size
         let j = button.tag % MinesweeperGame.size
-        // if the cell is already revealed, don't do anything
+        // If the cell is already revealed, don't do anything.
         if !game!.finished && !game!.revealedCells[i][j] {
             revealCell(button)
-//            game!.revealedCells[i][j] = true
-            numberOfRemainingCells -= 1
-            // if all non-mine cells are revealed, win
-            if numberOfRemainingCells == MinesweeperGame.numberOfMines {
+            // If all non-mine cells are revealed, win.
+            if game!.numberOfRemainingCells == MinesweeperGame.numberOfMines {
                 game!.finished = true
                 let alert = UIAlertController(title: "You've won!", message: nil, preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
-//                for row in cells {
-//                    for cell in row {
-//                        cell.isRevealed = true
-//                    }
-//                }
-                // reveal all cells
-//                for row in 0..<MinesweeperGame.size {
-//                    for column in 0..<MinesweeperGame.size {
-//                        var thisCell = cells[row][column]
-//                        thisCell.isRevealed = true
-//                        cells[row][column] = thisCell
-//                    }
-//                }
+                // Reveal all cells.
                 for button in self.buttons {
                     revealCell(button)
                 }
-//                return newCell
             }
-            // if the revealed cell has a mine, lose
+            // If the revealed cell has a mine, lose.
             if game!.hasMine(row: i, column: j)! {
                 game!.finished = true
                 let alert = UIAlertController(title: "You've lost!", message: nil, preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
-//                for row in cells {
-//                    for cell in row {
-//                        cell.isRevealed = true
-//                    }
-//                }
-//                return
-//                for row in 0..<MinesweeperGame.size {
-//                    for column in 0..<MinesweeperGame.size {
-//                        var thisCell = cells[row][column]
-//                        thisCell.isRevealed = true
-//                        cells[row][column] = thisCell
-//                    }
-//                }
-//                return newCell
+                // Reveal all cells.
                 for button in self.buttons {
                     revealCell(button)
                 }
             } else {
-                // if the current cell doesn't have a mine, recursively reveal the neighbouring cells
+                // If a cell has 0 mines nearby, recursively reveal the surrounding cells.
                 if game!.numberOfMinesNear(row: i, column: j)! == 0 {
                     if i > 0 {
                         // north
@@ -250,14 +157,14 @@ class ViewController: UIViewController {
                 }
             }
         }
-//        return newCell
     }
     
+    /// Reveal a single cell.
     func revealCell(button: UIButton) {
         let i = button.tag / MinesweeperGame.size
         let j = button.tag % MinesweeperGame.size
-        print("Revealing cell at row \(i) column \(j)")
         if !game!.revealedCells[i][j] {
+            print("Revealing cell at row \(i) column \(j)")
             if game!.hasMine(row: i, column: j)! {
                 button.setTitle("X", forState: .Normal)
             } else {
@@ -265,6 +172,7 @@ class ViewController: UIViewController {
                 button.setTitle(numberOfMinesNearby > 0 ? "\(numberOfMinesNearby)" : "", forState: .Normal)
             }
             game!.revealedCells[i][j] = true
+            game!.numberOfRemainingCells -= 1
         }
     }
 }

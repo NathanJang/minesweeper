@@ -12,6 +12,8 @@ struct MinesweeperGame {
     static let size: Int = 9
     static let numberOfMines: Int = 10
     
+    var numberOfRemainingCells = MinesweeperGame.size * MinesweeperGame.size
+    
     var finished = false
     
     private var mineField: [[Bool]]
@@ -30,7 +32,7 @@ struct MinesweeperGame {
         self.mineField = initialArray
         self.revealedCells = initialArray
         
-        // put `numberOfMines` mines in random places
+        // Put `numberOfMines` mines in random places.
         for _ in 0..<MinesweeperGame.numberOfMines {
             var i, j: Int
             repeat {
@@ -40,7 +42,7 @@ struct MinesweeperGame {
             self.mineField[i][j] = true
         }
         
-        // print out the matrix so we can see where everything is
+        // Print out the matrix so we can see where everything is.
         for row in 0..<MinesweeperGame.size {
             for column in 0..<MinesweeperGame.size {
                 if self.hasMine(row: row, column: column)! { print("X", separator: "", terminator: " ") }
