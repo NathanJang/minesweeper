@@ -98,26 +98,20 @@ class ViewController: UIViewController {
         // If the cell is already revealed, don't do anything.
         if !game!.finished && !game!.revealedCells[i][j] {
             revealCell(button)
-            // If all non-mine cells are revealed, win.
-            if game!.numberOfRemainingCells == MinesweeperGame.numberOfMines {
-                game!.finished = true
-                let alert = UIAlertController(title: "You've won!", message: nil, preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-                // Reveal all cells.
-                for button in self.buttons {
-                    revealCell(button)
-                }
-            }
             // If the revealed cell has a mine, lose.
             if game!.hasMine(row: i, column: j)! {
                 game!.finished = true
                 let alert = UIAlertController(title: "You've lost!", message: nil, preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
-                // Reveal all cells.
-                for button in self.buttons {
-                    revealCell(button)
+                // Reveal all other non-mine cells.
+                // Only this mined cell is revealed so it is highlighted which mined cell the user tapped that caused the loss.
+                for i in 0..<MinesweeperGame.size {
+                    for j in 0..<MinesweeperGame.size {
+                        if !game!.hasMine(row: i, column: j)! {
+                            revealCell(self.buttons[i * MinesweeperGame.size + j])
+                        }
+                    }
                 }
             } else {
                 // If a cell has 0 mines nearby, recursively reveal the surrounding cells.
@@ -155,6 +149,13 @@ class ViewController: UIViewController {
                         revealNeighboringCells(self.buttons[button.tag + MinesweeperGame.size + 1])
                     }
                 }
+            }
+            // If all non-mine cells are revealed, win.
+            if game!.numberOfRemainingCells == MinesweeperGame.numberOfMines {
+                game!.finished = true
+                let alert = UIAlertController(title: "You've won!", message: nil, preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
             }
         }
     }
