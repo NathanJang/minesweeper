@@ -8,18 +8,20 @@
 
 import Foundation
 
-struct MinesweeperGame {
+/// An object of the game state.
+/// Conforms to `NSCoding` because the game state persists between launches.
+class MinesweeperGame: NSObject, NSCoding {
     static let size: Int = 9
     static let numberOfMines: Int = 10
     
     var numberOfRemainingCells = MinesweeperGame.size * MinesweeperGame.size
     
-    var finished = false
+    var isFinished = false
     
     private var mineField: [[Bool]]
     var revealedCells: [[Bool]]
     
-    init() {
+    override init() {
         /// Matrix of `size * size` with `false` values.
         var initialArray = [[Bool]]()
         for _ in 0..<MinesweeperGame.size {
@@ -31,6 +33,8 @@ struct MinesweeperGame {
         }
         self.mineField = initialArray
         self.revealedCells = initialArray
+        
+        super.init()
         
         // Put `numberOfMines` mines in random places.
         for _ in 0..<MinesweeperGame.numberOfMines {
@@ -51,6 +55,13 @@ struct MinesweeperGame {
             print()
         }
         print()
+    }
+    
+    private init(numberOfRemainingCells: Int, finished: Bool, mineField: [[Bool]], revealedCells: [[Bool]]) {
+        self.numberOfRemainingCells = numberOfRemainingCells
+        self.isFinished = finished
+        self.mineField = mineField
+        self.revealedCells = revealedCells
     }
     
     func hasMine(row row: Int, column: Int) -> Bool? {
@@ -122,5 +133,26 @@ struct MinesweeperGame {
         }
         
         return numberOfMines
+    }
+    
+    // MARK: NSCoding
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeInt(Int32(self.numberOfRemainingCells), forKey: "numberOfRemainingCells")
+        aCoder.encodeBool(self.isFinished, forKey: "finished")
+        aCoder.encodeObject(self.mineField, forKey: "mineField")
+        aCoder.encodeObject(self.revealedCells, forKey: "revealedCells")
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        guard let mineField = aDecoder.decodeObjectForKey("mineField") as? [[Bool]],
+            let revealedCells = aDecoder.decodeObjectForKey("revealedCells") as? [[Bool]]
+            else { return nil }
+        self.init(
+            numberOfRemainingCells: aDecoder.decodeIntegerForKey("numberOfRemainingCells"),
+            finished: aDecoder.decodeBoolForKey("finished"),
+            mineField: mineField,
+            revealedCells: revealedCells
+        )
     }
 }
