@@ -10,12 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    /// An alias for the current game stored in `AppDelegate`.
-    var game: MinesweeperGame? {
-        get { return (UIApplication.sharedApplication().delegate as! AppDelegate).game }
-        set { (UIApplication.sharedApplication().delegate as! AppDelegate).game = newValue }
-    }
-    
     /// An array of the cells in the game, in row-major format.
     var cells = [UIButton]()
     
@@ -65,7 +59,7 @@ class ViewController: UIViewController {
             gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
         }
         
-        if game == nil {
+        if MinesweeperGame.currentGame == nil {
             initializeGame()
         } else {
             configureCells()
@@ -80,7 +74,7 @@ class ViewController: UIViewController {
     /// Loads a new game.
     func initializeGame() {
         print("Renewing game")
-        self.game = MinesweeperGame()
+        MinesweeperGame.currentGame = MinesweeperGame()
         self.configureCells()
     }
     
@@ -88,9 +82,9 @@ class ViewController: UIViewController {
     func configureCells() {
         for i in 0..<MinesweeperGame.size {
             for j in 0..<MinesweeperGame.size {
-                if self.game!.revealedCells[i][j] {
+                if MinesweeperGame.currentGame!.revealedCells[i][j] {
                     // Mark it not revealed so `revealCell(_:)` can reveal it correctly.
-                    self.game!.revealedCells[i][j] = false
+                    MinesweeperGame.currentGame!.revealedCells[i][j] = false
                     revealCell(self.cells[MinesweeperGame.size * i + j])
                 } else {
                     // Non-revealed buttons show "-".
@@ -98,7 +92,7 @@ class ViewController: UIViewController {
                 }
             }
         }
-        self.resetButton.setTitle("Reset", forState: .Normal)
+        self.resetButton.setTitle(MinesweeperGame.currentGame!.isFinished ? "New Game" : "Reset", forState: .Normal)
     }
 
     override func didReceiveMemoryWarning() {
@@ -116,11 +110,11 @@ class ViewController: UIViewController {
         let i = button.tag / MinesweeperGame.size
         let j = button.tag % MinesweeperGame.size
         // If the cell is already revealed, don't do anything.
-        if !self.game!.isFinished && !self.game!.revealedCells[i][j] {
+        if !MinesweeperGame.currentGame!.isFinished && !MinesweeperGame.currentGame!.revealedCells[i][j] {
             self.revealCell(button)
             // If the revealed cell has a mine, lose.
-            if self.game!.hasMine(row: i, column: j)! {
-                self.game!.isFinished = true
+            if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
+                MinesweeperGame.currentGame!.isFinished = true
                 let alert = UIAlertController(title: "You've lost!", message: nil, preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
@@ -128,7 +122,7 @@ class ViewController: UIViewController {
                 // Only this mined cell is revealed so it is highlighted which mined cell the user tapped that caused the loss.
                 for i in 0..<MinesweeperGame.size {
                     for j in 0..<MinesweeperGame.size {
-                        if !self.game!.hasMine(row: i, column: j)! {
+                        if !MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
                             self.revealCell(self.cells[i * MinesweeperGame.size + j])
                         }
                     }
@@ -136,7 +130,7 @@ class ViewController: UIViewController {
                 self.resetButton.setTitle("New Game", forState: .Normal)
             } else {
                 // If a cell has 0 mines nearby, recursively reveal the surrounding cells.
-                if self.game!.numberOfMinesNear(row: i, column: j)! == 0 {
+                if MinesweeperGame.currentGame!.numberOfMinesNear(row: i, column: j)! == 0 {
                     if i > 0 {
                         // north
                         self.revealNeighboringCells(self.cells[button.tag - MinesweeperGame.size])
@@ -172,8 +166,8 @@ class ViewController: UIViewController {
                 }
             }
             // If all non-mine cells are revealed, win.
-            if game!.numberOfRemainingCells == MinesweeperGame.numberOfMines {
-                game!.isFinished = true
+            if MinesweeperGame.currentGame!.numberOfRemainingCells == MinesweeperGame.numberOfMines {
+                MinesweeperGame.currentGame!.isFinished = true
                 let alert = UIAlertController(title: "You've won!", message: nil, preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
@@ -186,15 +180,15 @@ class ViewController: UIViewController {
     func revealCell(button: UIButton) {
         let i = button.tag / MinesweeperGame.size
         let j = button.tag % MinesweeperGame.size
-        if !self.game!.revealedCells[i][j] {
-            if self.game!.hasMine(row: i, column: j)! {
+        if !MinesweeperGame.currentGame!.revealedCells[i][j] {
+            if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
                 button.setTitle("X", forState: .Normal)
             } else {
-                let numberOfMinesNearby = self.game!.numberOfMinesNear(row: i, column: j)!
+                let numberOfMinesNearby = MinesweeperGame.currentGame!.numberOfMinesNear(row: i, column: j)!
                 button.setTitle(numberOfMinesNearby > 0 ? "\(numberOfMinesNearby)" : "", forState: .Normal)
             }
-            self.game!.revealedCells[i][j] = true
-            self.game!.numberOfRemainingCells -= 1
+            MinesweeperGame.currentGame!.revealedCells[i][j] = true
+            MinesweeperGame.currentGame!.numberOfRemainingCells -= 1
         }
     }
 }

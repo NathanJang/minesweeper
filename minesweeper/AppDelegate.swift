@@ -13,15 +13,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    /// The current game.
-    /// It's stored in `AppDelegate` for persisting the game state between launches.
-    var game: MinesweeperGame?
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         let defaults = NSUserDefaults.standardUserDefaults()
         if let data = defaults.objectForKey("game") as? NSData {
-            self.game = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? MinesweeperGame
+            MinesweeperGame.currentGame = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? MinesweeperGame
         }
         
         return true
@@ -36,8 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         let defaults = NSUserDefaults.standardUserDefaults()
-        if self.game != nil {
-            let data = NSKeyedArchiver.archivedDataWithRootObject(self.game!)
+        if MinesweeperGame.currentGame != nil {
+            let data = NSKeyedArchiver.archivedDataWithRootObject(MinesweeperGame.currentGame!)
             defaults.setObject(data, forKey: "game")
         }
     }

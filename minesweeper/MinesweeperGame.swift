@@ -11,6 +11,8 @@ import Foundation
 /// An object of the game state.
 /// Conforms to `NSCoding` because the game state persists between launches.
 class MinesweeperGame: NSObject, NSCoding {
+    static var currentGame: MinesweeperGame?
+    
     static let size: Int = 9
     static let numberOfMines: Int = 10
     
