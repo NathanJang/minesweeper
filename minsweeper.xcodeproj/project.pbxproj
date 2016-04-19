@@ -12,17 +12,19 @@
 		CE0D60E81CBE40AA00B95609 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E71CBE40AA00B95609 /* Assets.xcassets */; };
 		CE0D60EB1CBE40AA00B95609 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E91CBE40AA00B95609 /* LaunchScreen.storyboard */; };
 		CE0D60F31CBE41B900B95609 /* MinesweeperGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */; };
+		CED9315E1CC671270090CD3E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CED9315D1CC671270090CD3E /* Default-568h@2x.png */; };
 		CEF1F5BC1CC29F6F00733358 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF1F5BB1CC29F6F00733358 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CE0D60DD1CBE40AA00B95609 /* minesweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minesweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE0D60DD1CBE40AA00B95609 /* minsweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minsweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0D60E01CBE40AA00B95609 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE0D60E51CBE40AA00B95609 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE0D60E71CBE40AA00B95609 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0D60EA1CBE40AA00B95609 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0D60EC1CBE40AA00B95609 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinesweeperGame.swift; sourceTree = "<group>"; };
+		CED9315D1CC671270090CD3E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		CEF1F5BB1CC29F6F00733358 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -40,7 +42,7 @@
 		CE0D60D41CBE40AA00B95609 = {
 			isa = PBXGroup;
 			children = (
-				CE0D60DF1CBE40AA00B95609 /* minesweeper */,
+				CE0D60DF1CBE40AA00B95609 /* minsweeper */,
 				CE0D60DE1CBE40AA00B95609 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,31 +50,32 @@
 		CE0D60DE1CBE40AA00B95609 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CE0D60DD1CBE40AA00B95609 /* minesweeper.app */,
+				CE0D60DD1CBE40AA00B95609 /* minsweeper.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE0D60DF1CBE40AA00B95609 /* minesweeper */ = {
+		CE0D60DF1CBE40AA00B95609 /* minsweeper */ = {
 			isa = PBXGroup;
 			children = (
 				CE0D60E01CBE40AA00B95609 /* AppDelegate.swift */,
 				CEF1F5BB1CC29F6F00733358 /* ViewController.swift */,
+				CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */,
 				CE0D60E41CBE40AA00B95609 /* Main.storyboard */,
 				CE0D60E71CBE40AA00B95609 /* Assets.xcassets */,
 				CE0D60E91CBE40AA00B95609 /* LaunchScreen.storyboard */,
+				CED9315D1CC671270090CD3E /* Default-568h@2x.png */,
 				CE0D60EC1CBE40AA00B95609 /* Info.plist */,
-				CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */,
 			);
-			path = minesweeper;
+			path = minsweeper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CE0D60DC1CBE40AA00B95609 /* minesweeper */ = {
+		CE0D60DC1CBE40AA00B95609 /* minsweeper */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CE0D60EF1CBE40AA00B95609 /* Build configuration list for PBXNativeTarget "minesweeper" */;
+			buildConfigurationList = CE0D60EF1CBE40AA00B95609 /* Build configuration list for PBXNativeTarget "minsweeper" */;
 			buildPhases = (
 				CE0D60D91CBE40AA00B95609 /* Sources */,
 				CE0D60DA1CBE40AA00B95609 /* Frameworks */,
@@ -82,9 +85,9 @@
 			);
 			dependencies = (
 			);
-			name = minesweeper;
+			name = minsweeper;
 			productName = minesweeper;
-			productReference = CE0D60DD1CBE40AA00B95609 /* minesweeper.app */;
+			productReference = CE0D60DD1CBE40AA00B95609 /* minsweeper.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -99,11 +102,11 @@
 				TargetAttributes = {
 					CE0D60DC1CBE40AA00B95609 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 9Z4VM84YX9;
+						DevelopmentTeam = QXMG8R2QJP;
 					};
 				};
 			};
-			buildConfigurationList = CE0D60D81CBE40AA00B95609 /* Build configuration list for PBXProject "minesweeper" */;
+			buildConfigurationList = CE0D60D81CBE40AA00B95609 /* Build configuration list for PBXProject "minsweeper" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -116,7 +119,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CE0D60DC1CBE40AA00B95609 /* minesweeper */,
+				CE0D60DC1CBE40AA00B95609 /* minsweeper */,
 			);
 		};
 /* End PBXProject section */
@@ -127,6 +130,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE0D60EB1CBE40AA00B95609 /* LaunchScreen.storyboard in Resources */,
+				CED9315E1CC671270090CD3E /* Default-568h@2x.png in Resources */,
 				CE0D60E81CBE40AA00B95609 /* Assets.xcassets in Resources */,
 				CE0D60E61CBE40AA00B95609 /* Main.storyboard in Resources */,
 			);
@@ -256,11 +260,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = minesweeper/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/minsweeper/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = caviar.respect.minesweeper;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = caviar.respect.minsweeper;
+				PRODUCT_NAME = minsweeper;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -271,11 +275,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = minesweeper/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/minsweeper/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = caviar.respect.minesweeper;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = caviar.respect.minsweeper;
+				PRODUCT_NAME = minsweeper;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -283,7 +287,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CE0D60D81CBE40AA00B95609 /* Build configuration list for PBXProject "minesweeper" */ = {
+		CE0D60D81CBE40AA00B95609 /* Build configuration list for PBXProject "minsweeper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE0D60ED1CBE40AA00B95609 /* Debug */,
@@ -292,7 +296,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CE0D60EF1CBE40AA00B95609 /* Build configuration list for PBXNativeTarget "minesweeper" */ = {
+		CE0D60EF1CBE40AA00B95609 /* Build configuration list for PBXNativeTarget "minsweeper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE0D60F01CBE40AA00B95609 /* Debug */,
