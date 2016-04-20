@@ -59,8 +59,8 @@ class MinesweeperGame: NSObject, NSCoding {
         print()
     }
     
-    private init(numberOfRemainingCells: Int, finished: Bool, mineField: [[Bool]], revealedCells: [[Bool]]) {
-        self.numberOfRemainingCells = numberOfRemainingCells
+    private init(finished: Bool, mineField: [[Bool]], revealedCells: [[Bool]]) {
+        // `self.numberOfRemainingCells` is left equal to the default `size * size` because if we're initting from here, it's from a previous game and that will be recalculated by the VC.
         self.isFinished = finished
         self.mineField = mineField
         self.revealedCells = revealedCells
@@ -151,7 +151,6 @@ class MinesweeperGame: NSObject, NSCoding {
             let revealedCells = aDecoder.decodeObjectForKey("revealedCells") as? [[Bool]]
             else { return nil }
         self.init(
-            numberOfRemainingCells: aDecoder.decodeIntegerForKey("numberOfRemainingCells"),
             finished: aDecoder.decodeBoolForKey("finished"),
             mineField: mineField,
             revealedCells: revealedCells
