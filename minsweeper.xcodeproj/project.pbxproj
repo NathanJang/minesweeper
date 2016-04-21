@@ -13,7 +13,6 @@
 		CE0D60EB1CBE40AA00B95609 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E91CBE40AA00B95609 /* LaunchScreen.storyboard */; };
 		CE0D60F31CBE41B900B95609 /* MinesweeperGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */; };
 		CED9315E1CC671270090CD3E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CED9315D1CC671270090CD3E /* Default-568h@2x.png */; };
-		CED931601CC8A0C50090CD3E /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = CED9315F1CC8A0C50090CD3E /* README.md */; };
 		CEF1F5BC1CC29F6F00733358 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF1F5BB1CC29F6F00733358 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -148,7 +147,6 @@
 			files = (
 				CE0D60E11CBE40AA00B95609 /* AppDelegate.swift in Sources */,
 				CEF1F5BC1CC29F6F00733358 /* ViewController.swift in Sources */,
-				CED931601CC8A0C50090CD3E /* README.md in Sources */,
 				CE0D60F31CBE41B900B95609 /* MinesweeperGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
