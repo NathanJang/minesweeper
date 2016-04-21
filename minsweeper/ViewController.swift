@@ -116,6 +116,9 @@ class ViewController: UIViewController {
             if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
                 MinesweeperGame.currentGame!.isFinished = true
                 let alert = UIAlertController(title: "You've lost!", message: nil, preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "New Game", style: .Default, handler: { action in
+                    self.initializeGame()
+                }))
                 alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
                 // Reveal all other non-mine cells.
@@ -169,6 +172,9 @@ class ViewController: UIViewController {
             if MinesweeperGame.currentGame!.numberOfRemainingCells == MinesweeperGame.numberOfMines {
                 MinesweeperGame.currentGame!.isFinished = true
                 let alert = UIAlertController(title: "You've won!", message: nil, preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "New Game", style: .Default, handler: { action in
+                    self.initializeGame()
+                }))
                 alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
                 self.resetButton.setTitle("New Game", forState: .Normal)
