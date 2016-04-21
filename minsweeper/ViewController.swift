@@ -119,7 +119,7 @@ class ViewController: UIViewController {
                 alert.addAction(UIAlertAction(title: "New Game", style: .Default, handler: { action in
                     self.initializeGame()
                 }))
-                alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
+                alert.addAction(UIAlertAction(title: "Done", style: .Cancel, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
                 // Reveal all other non-mine cells.
                 // Only this mined cell is revealed so it is highlighted which mined cell the user tapped that caused the loss.
@@ -175,7 +175,7 @@ class ViewController: UIViewController {
                 alert.addAction(UIAlertAction(title: "New Game", style: .Default, handler: { action in
                     self.initializeGame()
                 }))
-                alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
+                alert.addAction(UIAlertAction(title: "Done", style: .Cancel, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
                 self.resetButton.setTitle("New Game", forState: .Normal)
             }
