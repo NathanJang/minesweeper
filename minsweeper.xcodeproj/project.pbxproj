@@ -12,7 +12,6 @@
 		CE0D60E81CBE40AA00B95609 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E71CBE40AA00B95609 /* Assets.xcassets */; };
 		CE0D60EB1CBE40AA00B95609 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0D60E91CBE40AA00B95609 /* LaunchScreen.storyboard */; };
 		CE0D60F31CBE41B900B95609 /* MinesweeperGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */; };
-		CED9315E1CC671270090CD3E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CED9315D1CC671270090CD3E /* Default-568h@2x.png */; };
 		CEF1F5BC1CC29F6F00733358 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF1F5BB1CC29F6F00733358 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +23,6 @@
 		CE0D60EA1CBE40AA00B95609 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0D60EC1CBE40AA00B95609 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE0D60F21CBE41B900B95609 /* MinesweeperGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinesweeperGame.swift; sourceTree = "<group>"; };
-		CED9315D1CC671270090CD3E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		CED9315F1CC8A0C50090CD3E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CEF1F5BB1CC29F6F00733358 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,7 +64,6 @@
 				CE0D60E41CBE40AA00B95609 /* Main.storyboard */,
 				CE0D60E71CBE40AA00B95609 /* Assets.xcassets */,
 				CE0D60E91CBE40AA00B95609 /* LaunchScreen.storyboard */,
-				CED9315D1CC671270090CD3E /* Default-568h@2x.png */,
 				CE0D60EC1CBE40AA00B95609 /* Info.plist */,
 			);
 			path = minsweeper;
@@ -132,7 +129,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE0D60EB1CBE40AA00B95609 /* LaunchScreen.storyboard in Resources */,
-				CED9315E1CC671270090CD3E /* Default-568h@2x.png in Resources */,
 				CE0D60E81CBE40AA00B95609 /* Assets.xcassets in Resources */,
 				CE0D60E61CBE40AA00B95609 /* Main.storyboard in Resources */,
 			);
