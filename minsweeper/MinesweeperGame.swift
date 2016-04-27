@@ -13,11 +13,18 @@ import Foundation
 class MinesweeperGame: NSObject, NSCoding {
     static var currentGame: MinesweeperGame?
     
-    static let size: Int = 9
-    static let numberOfMines: Int = 10
+    static let size = 9
+    static let numberOfMines = 10
     
     var numberOfRemainingCells = MinesweeperGame.size * MinesweeperGame.size
     
+    /// The date when the current session started.
+    var startDate: NSDate?
+    /// The date when the game finished.
+    var endDate: NSDate?
+    /// The time offset from previous sessions to be added to the total game duration, if the game was played over multiple sessions.
+    var timeOffset: NSTimeInterval = 0
+    var isStarted = false
     var isFinished = false
     
     private var mineField: [[Bool]]
@@ -59,11 +66,13 @@ class MinesweeperGame: NSObject, NSCoding {
         print()
     }
     
-    private init(finished: Bool, mineField: [[Bool]], revealedCells: [[Bool]]) {
+    private init(isStarted: Bool, isFinished: Bool, mineField: [[Bool]], revealedCells: [[Bool]], timeOffset: NSTimeInterval) {
         // `self.numberOfRemainingCells` is left equal to the default `size * size` because if we're initting from here, it's from a previous game and that will be recalculated by the VC.
-        self.isFinished = finished
+        self.isStarted = isStarted
+        self.isFinished = isFinished
         self.mineField = mineField
         self.revealedCells = revealedCells
+        self.timeOffset = timeOffset
     }
     
     func hasMine(row row: Int, column: Int) -> Bool? {
@@ -137,13 +146,20 @@ class MinesweeperGame: NSObject, NSCoding {
         return numberOfMines
     }
     
+    func duration() -> NSTimeInterval {
+        guard let startDate = self.startDate, endDate = self.endDate else { return self.timeOffset }
+        return endDate.timeIntervalSinceDate(startDate) + self.timeOffset
+    }
+    
     // MARK: NSCoding
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeInt(Int32(self.numberOfRemainingCells), forKey: "numberOfRemainingCells")
-        aCoder.encodeBool(self.isFinished, forKey: "finished")
+        aCoder.encodeBool(self.isStarted, forKey: "isStarted")
+        aCoder.encodeBool(self.isFinished, forKey: "isFinished")
         aCoder.encodeObject(self.mineField, forKey: "mineField")
         aCoder.encodeObject(self.revealedCells, forKey: "revealedCells")
+        aCoder.encodeDouble(self.timeOffset, forKey: "timeOffset")
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -151,9 +167,11 @@ class MinesweeperGame: NSObject, NSCoding {
             let revealedCells = aDecoder.decodeObjectForKey("revealedCells") as? [[Bool]]
             else { return nil }
         self.init(
-            finished: aDecoder.decodeBoolForKey("finished"),
+            isStarted: aDecoder.decodeBoolForKey("isStarted"),
+            isFinished: aDecoder.decodeBoolForKey("isFinished"),
             mineField: mineField,
-            revealedCells: revealedCells
+            revealedCells: revealedCells,
+            timeOffset: aDecoder.decodeDoubleForKey("timeOffset")
         )
     }
 }

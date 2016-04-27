@@ -62,6 +62,10 @@ class ViewController: UIViewController {
         if MinesweeperGame.currentGame == nil {
             initializeGame()
         } else {
+            // Start the time immediately if the game was already started before.
+            if MinesweeperGame.currentGame!.isStarted {
+                MinesweeperGame.currentGame!.startDate = NSDate()
+            }
             configureCells()
         }
         
@@ -101,6 +105,11 @@ class ViewController: UIViewController {
     }
     
     func didTapButton(sender: UIButton, event: UIControlEvents) {
+        // Start the time if it isn't started on a button tap.
+        if !MinesweeperGame.currentGame!.isStarted {
+            MinesweeperGame.currentGame!.isStarted = true
+            MinesweeperGame.currentGame!.startDate = NSDate()
+        }
         self.revealNeighboringCells(sender)
     }
 
@@ -115,18 +124,8 @@ class ViewController: UIViewController {
             // If the revealed cell has a mine, lose.
             if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
                 MinesweeperGame.currentGame!.isFinished = true
-                if #available(iOS 8.0, *) {
-                    let alert = UIAlertController(title: "You've lost!", message: nil, preferredStyle: .Alert)
-                    alert.addAction(UIAlertAction(title: "New Game", style: .Default, handler: { _ in
-                        self.initializeGame()
-                    }))
-                    alert.addAction(UIAlertAction(title: "Done", style: .Cancel, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                } else {
-                    let alertView = UIAlertView(title: "You've lost!", message: "", delegate: self, cancelButtonTitle: "Done", otherButtonTitles: "New Game")
-                    alertView.alertViewStyle = .Default
-                    alertView.show()
-                }
+                MinesweeperGame.currentGame!.endDate = NSDate()
+                self.showAlert(title: "You've lost!", message: String(format: "%.2f seconds", MinesweeperGame.currentGame!.duration()))
                 // Reveal all other non-mine cells.
                 // Only this mined cell is revealed so it is highlighted which mined cell the user tapped that caused the loss.
                 for i in 0..<MinesweeperGame.size {
@@ -177,18 +176,8 @@ class ViewController: UIViewController {
             // If all non-mine cells are revealed, win.
             if MinesweeperGame.currentGame!.numberOfRemainingCells == MinesweeperGame.numberOfMines {
                 MinesweeperGame.currentGame!.isFinished = true
-                if #available(iOS 8.0, *) {
-                    let alert = UIAlertController(title: "You've won!", message: nil, preferredStyle: .Alert)
-                    alert.addAction(UIAlertAction(title: "New Game", style: .Default, handler: { _ in
-                        self.initializeGame()
-                    }))
-                    alert.addAction(UIAlertAction(title: "Done", style: .Cancel, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                } else {
-                    let alertView = UIAlertView(title: "You've won!", message: "", delegate: self, cancelButtonTitle: "Done", otherButtonTitles: "New Game")
-                    alertView.alertViewStyle = .Default
-                    alertView.show()
-                }
+                MinesweeperGame.currentGame!.endDate = NSDate()
+                self.showAlert(title: "You've won!", message: String(format: "%.2f seconds", MinesweeperGame.currentGame!.duration()))
                 self.resetButton.setTitle("New Game", forState: .Normal)
             }
         }
@@ -207,6 +196,21 @@ class ViewController: UIViewController {
             }
             MinesweeperGame.currentGame!.revealedCells[i][j] = true
             MinesweeperGame.currentGame!.numberOfRemainingCells -= 1
+        }
+    }
+    
+    func showAlert(title title: String, message: String?) {
+        if #available(iOS 8.0, *) {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "New Game", style: .Default) { _ in
+                self.initializeGame()
+            })
+            alert.addAction(UIAlertAction(title: "Done", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            let alertView = UIAlertView(title: title, message: message != nil ? message! : "", delegate: self, cancelButtonTitle: "Done", otherButtonTitles: "New Game")
+            alertView.alertViewStyle = .Default
+            alertView.show()
         }
     }
 }
