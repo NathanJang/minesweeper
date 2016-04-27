@@ -26,6 +26,7 @@ class MinesweeperGame: NSObject, NSCoding {
     var timeOffset: NSTimeInterval = 0
     var isStarted = false
     var isFinished = false
+    var won = false
     
     private var mineField: [[Bool]]
     var revealedCells: [[Bool]]
@@ -149,6 +150,10 @@ class MinesweeperGame: NSObject, NSCoding {
     func duration() -> NSTimeInterval {
         guard let startDate = self.startDate, endDate = self.endDate else { return self.timeOffset }
         return endDate.timeIntervalSinceDate(startDate) + self.timeOffset
+    }
+    
+    func formattedDuration() -> String {
+        return String(format: "%.2f seconds", MinesweeperGame.currentGame!.duration())
     }
     
     // MARK: NSCoding

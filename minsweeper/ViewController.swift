@@ -15,20 +15,21 @@ class ViewController: UIViewController {
     
     /// A button that loads a new game.
     let resetButton = UIButton(type: .System)
+    
+    /// The superview for all game cells, a square with the same width as `self.view` and centered.
+    let gameView = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        /// The superview for all game cells, a square with the same width as `self.view` and centered.
-        let gameView = UIView()
-        gameView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(gameView)
-        gameView.frame.size = CGSize(width: self.view.frame.width, height: self.view.frame.width)
-        let xConstraint = NSLayoutConstraint(item: gameView, attribute: .CenterX, relatedBy: .Equal, toItem: self.view, attribute: .CenterX, multiplier: 1, constant: 0)
-        let yConstraint = NSLayoutConstraint(item: gameView, attribute: .CenterY, relatedBy: .Equal, toItem: self.view, attribute: .CenterY, multiplier: 1, constant: 0)
-        let widthConstraint = NSLayoutConstraint(item: gameView, attribute: .Width, relatedBy: .Equal, toItem: self.view, attribute: .Width, multiplier: 1, constant: 0)
-        let heightConstraint = NSLayoutConstraint(item: gameView, attribute: .Height, relatedBy: .Equal, toItem: self.view, attribute: .Width, multiplier: 1, constant: 0)
+        self.gameView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.gameView)
+        self.gameView.frame.size = CGSize(width: self.view.frame.width, height: self.view.frame.width)
+        let xConstraint = NSLayoutConstraint(item: self.gameView, attribute: .CenterX, relatedBy: .Equal, toItem: self.view, attribute: .CenterX, multiplier: 1, constant: 0)
+        let yConstraint = NSLayoutConstraint(item: self.gameView, attribute: .CenterY, relatedBy: .Equal, toItem: self.view, attribute: .CenterY, multiplier: 1, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: self.gameView, attribute: .Width, relatedBy: .Equal, toItem: self.view, attribute: .Width, multiplier: 1, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: self.gameView, attribute: .Height, relatedBy: .Equal, toItem: self.view, attribute: .Width, multiplier: 1, constant: 0)
         self.view.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
         
         // Initialize buttons and store in `self.buttons`.
@@ -38,25 +39,25 @@ class ViewController: UIViewController {
             self.cells.append(button)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(didTapButton(_:event:)), forControlEvents: .TouchUpInside)
-            gameView.addSubview(button)
+            self.gameView.addSubview(button)
             let xConstraint, yConstraint, widthConstraint, heightConstraint: NSLayoutConstraint
             if i % MinesweeperGame.size == 0 {
                 // If it's column 0, align it to the left of `gameView`.
-                xConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: gameView, attribute: .Left, multiplier: 1, constant: 0)
+                xConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: self.gameView, attribute: .Left, multiplier: 1, constant: 0)
             } else {
                 // Otherwise, put it next to the previous cell.
                 xConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: self.cells[i - 1], attribute: .Right, multiplier: 1, constant: 0)
             }
             if i / MinesweeperGame.size == 0 {
                 // If it's row 0, align it to the top of `gameView`.
-                yConstraint = NSLayoutConstraint(item: button, attribute: .Top, relatedBy: .Equal, toItem: gameView, attribute: .Top, multiplier: 1, constant: 0)
+                yConstraint = NSLayoutConstraint(item: button, attribute: .Top, relatedBy: .Equal, toItem: self.gameView, attribute: .Top, multiplier: 1, constant: 0)
             } else {
                 // Otherwise, put it next to the cell in the same column in the previous row.
                 yConstraint = NSLayoutConstraint(item: button, attribute: .Top, relatedBy: .Equal, toItem: self.cells[i - MinesweeperGame.size], attribute: .Bottom, multiplier: 1, constant: 0)
             }
-            widthConstraint = NSLayoutConstraint(item: button, attribute: .Width, relatedBy: .Equal, toItem: gameView, attribute: .Width, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-            heightConstraint = NSLayoutConstraint(item: button, attribute: .Height, relatedBy: .Equal, toItem: gameView, attribute: .Height, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
-            gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
+            widthConstraint = NSLayoutConstraint(item: button, attribute: .Width, relatedBy: .Equal, toItem: self.gameView, attribute: .Width, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
+            heightConstraint = NSLayoutConstraint(item: button, attribute: .Height, relatedBy: .Equal, toItem: self.gameView, attribute: .Height, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
+            self.gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
         }
         
         if MinesweeperGame.currentGame == nil {
@@ -125,7 +126,7 @@ class ViewController: UIViewController {
             if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
                 MinesweeperGame.currentGame!.isFinished = true
                 MinesweeperGame.currentGame!.endDate = NSDate()
-                self.showAlert(title: "You've lost!", message: String(format: "%.2f seconds", MinesweeperGame.currentGame!.duration()))
+                self.showAlert(won: false, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
                 // Reveal all other non-mine cells.
                 // Only this mined cell is revealed so it is highlighted which mined cell the user tapped that caused the loss.
                 for i in 0..<MinesweeperGame.size {
@@ -176,8 +177,9 @@ class ViewController: UIViewController {
             // If all non-mine cells are revealed, win.
             if MinesweeperGame.currentGame!.numberOfRemainingCells == MinesweeperGame.numberOfMines {
                 MinesweeperGame.currentGame!.isFinished = true
+                MinesweeperGame.currentGame!.won = true
                 MinesweeperGame.currentGame!.endDate = NSDate()
-                self.showAlert(title: "You've won!", message: String(format: "%.2f seconds", MinesweeperGame.currentGame!.duration()))
+                self.showAlert(won: true, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
                 self.resetButton.setTitle("New Game", forState: .Normal)
             }
         }
@@ -199,19 +201,39 @@ class ViewController: UIViewController {
         }
     }
     
-    func showAlert(title title: String, message: String?) {
+    func showAlert(won won: Bool, formattedDuration: String) {
         if #available(iOS 8.0, *) {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+            let alert = UIAlertController(title: won ? "You've won!" : "You've lost!", message: formattedDuration, preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "New Game", style: .Default) { _ in
                 self.initializeGame()
+            })
+            alert.addAction(UIAlertAction(title: "Share", style: .Default) { _ in
+                self.showActivityController(won: won, formattedDuration: formattedDuration)
             })
             alert.addAction(UIAlertAction(title: "Done", style: .Cancel, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         } else {
-            let alertView = UIAlertView(title: title, message: message != nil ? message! : "", delegate: self, cancelButtonTitle: "Done", otherButtonTitles: "New Game")
+            let alertView = UIAlertView(title: won ? "You've won!" : "You've lost!", message: formattedDuration, delegate: self, cancelButtonTitle: "Done", otherButtonTitles: "New Game", "Share")
             alertView.alertViewStyle = .Default
             alertView.show()
         }
+    }
+    
+    func showActivityController(won won: Bool, formattedDuration: String) {
+        let message = "I just \(won ? "won" : "lost") a game of Minsweeper in \(formattedDuration)!"
+        let URL = NSURL(string: "https://appsto.re/us/qy64bb.i")!
+        let image = self.imageOfGameView()
+        let activityViewController = UIActivityViewController(activityItems: [message, URL, image], applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivityTypeAddToReadingList]
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+    }
+    
+    func imageOfGameView() -> UIImage {
+        UIGraphicsBeginImageContext(self.gameView.frame.size)
+        self.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
     }
 }
 
@@ -221,6 +243,8 @@ extension ViewController: UIAlertViewDelegate {
         // If "New Game" is clicked
         if buttonIndex == 1 {
             self.initializeGame()
+        } else if buttonIndex == 2 {
+            self.showActivityController(won: MinesweeperGame.currentGame!.won, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
         }
     }
 }
