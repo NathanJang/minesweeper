@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox.AudioServices
 
 class ViewController: UIViewController {
     
@@ -61,6 +62,8 @@ class ViewController: UIViewController {
             widthConstraint = NSLayoutConstraint(item: button, attribute: .Width, relatedBy: .Equal, toItem: self.gameView, attribute: .Width, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
             heightConstraint = NSLayoutConstraint(item: button, attribute: .Height, relatedBy: .Equal, toItem: self.gameView, attribute: .Height, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
             self.gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
+            let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
+            button.addGestureRecognizer(gestureRecognizer)
         }
         
         if MinesweeperGame.currentGame == nil {
@@ -94,6 +97,10 @@ class ViewController: UIViewController {
                     // Mark it not revealed so `revealCell(_:)` can reveal it correctly.
                     MinesweeperGame.currentGame!.revealedCells[i][j] = false
                     revealCell(self.cells[MinesweeperGame.size * i + j])
+                } else if MinesweeperGame.currentGame!.markedCells[i][j] {
+                    // Mark it not marked so `markCell(_:)` can reveal it correctly.
+                    MinesweeperGame.currentGame!.markedCells[i][j] = false
+                    markCell(self.cells[MinesweeperGame.size * i + j])
                 } else {
                     // Non-revealed buttons show "-".
                     self.cells[MinesweeperGame.size * i + j].setTitle("-", forState: .Normal)
@@ -122,8 +129,8 @@ class ViewController: UIViewController {
     func revealNeighboringCells(button: UIButton) {
         let i = button.tag / MinesweeperGame.size
         let j = button.tag % MinesweeperGame.size
-        // If the cell is already revealed, don't do anything.
-        if !MinesweeperGame.currentGame!.isFinished && !MinesweeperGame.currentGame!.revealedCells[i][j] {
+        // If the cell is already revealed or marked, don't do anything.
+        if !MinesweeperGame.currentGame!.isFinished && !MinesweeperGame.currentGame!.revealedCells[i][j] && !MinesweeperGame.currentGame!.markedCells[i][j] {
             self.revealCell(button)
             // If the revealed cell has a mine, lose.
             if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
@@ -136,10 +143,15 @@ class ViewController: UIViewController {
                     for j in 0..<MinesweeperGame.size {
                         if !MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
                             self.revealCell(self.cells[i * MinesweeperGame.size + j])
+                        } else {
+                            if !MinesweeperGame.currentGame!.markedCells[i][j] {
+                                self.markCell(self.cells[i * MinesweeperGame.size + j])
+                            }
                         }
                     }
                 }
                 self.resetButton.setTitle("New Game", forState: .Normal)
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             } else {
                 // If a cell has 0 mines nearby, recursively reveal the surrounding cells.
                 if MinesweeperGame.currentGame!.numberOfMinesNear(row: i, column: j)! == 0 {
@@ -184,7 +196,30 @@ class ViewController: UIViewController {
                 MinesweeperGame.currentGame!.endDate = NSDate()
                 self.showAlert(won: true, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
                 self.resetButton.setTitle("New Game", forState: .Normal)
+                for i in 0..<MinesweeperGame.size {
+                    for j in 0..<MinesweeperGame.size {
+                        if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! && !MinesweeperGame.currentGame!.markedCells[i][j] {
+                            self.markCell(self.cells[i * MinesweeperGame.size + j])
+                        }
+                    }
+                }
             }
+        }
+    }
+    
+    func onLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == .Began {
+            let button = sender.view! as! UIButton
+            self.markCell(button)
+        }
+    }
+    
+    func markCell(button: UIButton) {
+        let i = button.tag / MinesweeperGame.size
+        let j = button.tag % MinesweeperGame.size
+        if !MinesweeperGame.currentGame!.isFinished && !MinesweeperGame.currentGame!.revealedCells[i][j] {
+            button.setTitle(MinesweeperGame.currentGame!.markedCells[i][j] ? "-" : "X", forState: .Normal)
+            MinesweeperGame.currentGame!.markedCells[i][j] = !MinesweeperGame.currentGame!.markedCells[i][j]
         }
     }
     
@@ -194,7 +229,7 @@ class ViewController: UIViewController {
         let j = button.tag % MinesweeperGame.size
         if !MinesweeperGame.currentGame!.revealedCells[i][j] {
             if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
-                button.setTitle("X", forState: .Normal)
+                button.setTitle("!!", forState: .Normal)
             } else {
                 let numberOfMinesNearby = MinesweeperGame.currentGame!.numberOfMinesNear(row: i, column: j)!
                 button.setTitle(numberOfMinesNearby > 0 ? "\(numberOfMinesNearby)" : "", forState: .Normal)

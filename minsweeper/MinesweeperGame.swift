@@ -30,6 +30,7 @@ class MinesweeperGame: NSObject, NSCoding {
     
     private var mineField: [[Bool]]
     var revealedCells: [[Bool]]
+    var markedCells: [[Bool]]
     
     override init() {
         /// Matrix of `size * size` with `false` values.
@@ -43,6 +44,7 @@ class MinesweeperGame: NSObject, NSCoding {
         }
         self.mineField = initialArray
         self.revealedCells = initialArray
+        self.markedCells = initialArray
         
         super.init()
         
@@ -67,12 +69,13 @@ class MinesweeperGame: NSObject, NSCoding {
         print()
     }
     
-    private init(isStarted: Bool, isFinished: Bool, mineField: [[Bool]], revealedCells: [[Bool]], timeOffset: NSTimeInterval) {
+    private init(isStarted: Bool, isFinished: Bool, mineField: [[Bool]], revealedCells: [[Bool]], markedCells: [[Bool]], timeOffset: NSTimeInterval) {
         // `self.numberOfRemainingCells` is left equal to the default `size * size` because if we're initting from here, it's from a previous game and that will be recalculated by the VC.
         self.isStarted = isStarted
         self.isFinished = isFinished
         self.mineField = mineField
         self.revealedCells = revealedCells
+        self.markedCells = markedCells
         self.timeOffset = timeOffset
     }
     
@@ -164,18 +167,21 @@ class MinesweeperGame: NSObject, NSCoding {
         aCoder.encodeBool(self.isFinished, forKey: "isFinished")
         aCoder.encodeObject(self.mineField, forKey: "mineField")
         aCoder.encodeObject(self.revealedCells, forKey: "revealedCells")
+        aCoder.encodeObject(self.markedCells, forKey: "markedCells")
         aCoder.encodeDouble(self.timeOffset, forKey: "timeOffset")
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
         guard let mineField = aDecoder.decodeObjectForKey("mineField") as? [[Bool]],
-            let revealedCells = aDecoder.decodeObjectForKey("revealedCells") as? [[Bool]]
+            let revealedCells = aDecoder.decodeObjectForKey("revealedCells") as? [[Bool]],
+            let markedCells = aDecoder.decodeObjectForKey("markedCells") as? [[Bool]]
             else { return nil }
         self.init(
             isStarted: aDecoder.decodeBoolForKey("isStarted"),
             isFinished: aDecoder.decodeBoolForKey("isFinished"),
             mineField: mineField,
             revealedCells: revealedCells,
+            markedCells: markedCells,
             timeOffset: aDecoder.decodeDoubleForKey("timeOffset")
         )
     }
