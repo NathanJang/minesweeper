@@ -24,6 +24,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.gameView.translatesAutoresizingMaskIntoConstraints = false
+        self.gameView.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(self.gameView)
         self.gameView.frame.size = CGSize(width: self.view.frame.width, height: self.view.frame.width)
         let xConstraint = NSLayoutConstraint(item: self.gameView, attribute: .CenterX, relatedBy: .Equal, toItem: self.view, attribute: .CenterX, multiplier: 1, constant: 0)
@@ -31,6 +32,8 @@ class ViewController: UIViewController {
         let widthConstraint = NSLayoutConstraint(item: self.gameView, attribute: .Width, relatedBy: .Equal, toItem: self.view, attribute: .Width, multiplier: 1, constant: 0)
         let heightConstraint = NSLayoutConstraint(item: self.gameView, attribute: .Height, relatedBy: .Equal, toItem: self.view, attribute: .Width, multiplier: 1, constant: 0)
         self.view.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
+        self.gameView.layer.cornerRadius = self.gameView.frame.width / CGFloat(MinesweeperGame.size) / 2
+        self.gameView.layer.masksToBounds = true
         
         // Initialize buttons and store in `self.buttons`.
         for i in 0..<MinesweeperGame.size * MinesweeperGame.size {
@@ -229,7 +232,7 @@ class ViewController: UIViewController {
     }
     
     func imageOfGameView() -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(self.gameView.frame.size, self.gameView.opaque, 0)
+        UIGraphicsBeginImageContextWithOptions(self.gameView.frame.size, false, 0)
         self.gameView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
