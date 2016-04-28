@@ -143,7 +143,6 @@ class ViewController: UIViewController {
             self.revealCell(button)
             // If the revealed cell has a mine, lose.
             if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
-                MinesweeperGame.currentGame!.isFinished = true
                 MinesweeperGame.currentGame!.endDate = NSDate()
                 self.showAlert(won: false, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
                 // Reveal all other non-mine cells.
@@ -159,6 +158,7 @@ class ViewController: UIViewController {
                         }
                     }
                 }
+                MinesweeperGame.currentGame!.isFinished = true
                 self.resetButton.setTitle("New Game", forState: .Normal)
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             } else {
