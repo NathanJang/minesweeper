@@ -17,6 +17,9 @@ class ViewController: UIViewController {
     /// A button that loads a new game.
     let resetButton = UIButton(type: .System)
     
+    /// A button to show help info.
+    let helpButton = UIButton(type: .System)
+    
     /// The superview for all game cells, a square with the same width as `self.view` and centered.
     let gameView = UIView()
 
@@ -80,6 +83,12 @@ class ViewController: UIViewController {
         self.view.addSubview(self.resetButton)
         self.view.addConstraints([NSLayoutConstraint(item: self.resetButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: 0), NSLayoutConstraint(item: self.resetButton, attribute: .CenterX, relatedBy: .Equal, toItem: self.view, attribute: .CenterX, multiplier: 1, constant: 0)])
         self.resetButton.addTarget(self, action: #selector(initializeGame), forControlEvents: .TouchUpInside)
+        
+        self.helpButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.helpButton)
+        self.view.addConstraints([NSLayoutConstraint(item: self.helpButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: 0), NSLayoutConstraint(item: self.helpButton, attribute: .Right, relatedBy: .Equal, toItem: self.view, attribute: .Right, multiplier: 1, constant: 0)])
+        self.helpButton.addTarget(self, action: #selector(didTapHelpButton), forControlEvents: .TouchUpInside)
+        self.helpButton.setTitle("?", forState: .Normal)
     }
     
     /// Loads a new game.
@@ -207,9 +216,24 @@ class ViewController: UIViewController {
         }
     }
     
+    func didTapHelpButton() {
+        let version = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
+        let title = "Minsweeper \(version)"
+        let message = "The goal is to clear the minefield. Tap on all the cells that don't contain a mine. Tap and hold to mark mines. The numbers represent how many of the cells around a cell contain a mine. If you tap on a mine, you lose!"
+        if #available(iOS 8.0, *) {
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+            self.presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            let alertView = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: "OK")
+            alertView.alertViewStyle = .Default
+            alertView.show()
+        }
+    }
+    
     func onLongPress(sender: UILongPressGestureRecognizer) {
         if sender.state == .Began {
-            let button = sender.view! as! UIButton
+            let button = sender.view as! UIButton
             self.markCell(button)
         }
     }
