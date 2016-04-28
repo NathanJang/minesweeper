@@ -229,8 +229,8 @@ class ViewController: UIViewController {
     }
     
     func imageOfGameView() -> UIImage {
-        UIGraphicsBeginImageContext(self.gameView.frame.size)
-        self.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        UIGraphicsBeginImageContextWithOptions(self.gameView.frame.size, self.gameView.opaque, 0)
+        self.gameView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image
