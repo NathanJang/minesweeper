@@ -200,7 +200,6 @@ class ViewController: UIViewController {
             }
             // If all non-mine cells are revealed, win.
             if MinesweeperGame.currentGame!.numberOfRemainingCells == MinesweeperGame.numberOfMines {
-                MinesweeperGame.currentGame!.isFinished = true
                 MinesweeperGame.currentGame!.won = true
                 MinesweeperGame.currentGame!.endDate = NSDate()
                 self.showAlert(won: true, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
@@ -212,6 +211,7 @@ class ViewController: UIViewController {
                         }
                     }
                 }
+                MinesweeperGame.currentGame!.isFinished = true
             }
         }
     }
