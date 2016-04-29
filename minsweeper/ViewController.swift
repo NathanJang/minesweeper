@@ -106,7 +106,7 @@ class ViewController: UIViewController {
                     // Mark it not revealed so `revealCell(_:)` can reveal it correctly.
                     MinesweeperGame.currentGame!.revealedCells[i][j] = false
                     revealCell(self.cells[MinesweeperGame.size * i + j])
-                } else if MinesweeperGame.currentGame!.markedCells[i][j] {
+                } else if MinesweeperGame.currentGame!.isFinished && MinesweeperGame.currentGame!.hasMine(row: i, column: j)! || MinesweeperGame.currentGame!.markedCells[i][j] {
                     // Mark it not marked so `markCell(_:)` can reveal it correctly.
                     MinesweeperGame.currentGame!.markedCells[i][j] = false
                     markCell(self.cells[MinesweeperGame.size * i + j])
@@ -234,14 +234,16 @@ class ViewController: UIViewController {
     func onLongPress(sender: UILongPressGestureRecognizer) {
         if sender.state == .Began {
             let button = sender.view as! UIButton
-            self.markCell(button)
+            if !MinesweeperGame.currentGame!.isFinished {
+                self.markCell(button)
+            }
         }
     }
     
     func markCell(button: UIButton) {
         let i = button.tag / MinesweeperGame.size
         let j = button.tag % MinesweeperGame.size
-        if !MinesweeperGame.currentGame!.isFinished && !MinesweeperGame.currentGame!.revealedCells[i][j] {
+        if !MinesweeperGame.currentGame!.revealedCells[i][j] {
             button.setTitle(MinesweeperGame.currentGame!.markedCells[i][j] ? "-" : "X", forState: .Normal)
             MinesweeperGame.currentGame!.markedCells[i][j] = !MinesweeperGame.currentGame!.markedCells[i][j]
         }
