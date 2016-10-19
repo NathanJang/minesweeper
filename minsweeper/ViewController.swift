@@ -125,6 +125,11 @@ class ViewController: UIViewController {
     }
     
     func didTapButton(sender: UIButton, event: UIControlEvents) {
+        // If the game is already finished, show the alert and don't do anything.
+        if MinesweeperGame.currentGame!.isFinished {
+            self.showAlert(won: MinesweeperGame.currentGame!.won, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
+            return
+        }
         // Start the time if it isn't started on a button tap.
         if !MinesweeperGame.currentGame!.isStarted {
             MinesweeperGame.currentGame!.isStarted = true
@@ -289,6 +294,16 @@ class ViewController: UIViewController {
         let image = self.imageOfGameView()
         let activityViewController = UIActivityViewController(activityItems: [message, URL, image], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityTypeAddToReadingList]
+        // Show the alert again once user is done sharing.
+        if #available(iOS 8.0, *) {
+            activityViewController.completionWithItemsHandler = {(_, _, _, _) -> Void in
+                self.showAlert(won: won, formattedDuration: formattedDuration)
+            }
+        } else {
+            activityViewController.completionHandler = {(_, _) -> Void in
+                self.showAlert(won: won, formattedDuration: formattedDuration)
+            }
+        }
         self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
