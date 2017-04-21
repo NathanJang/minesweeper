@@ -66,6 +66,7 @@ class ViewController: UIViewController {
             heightConstraint = NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: self.gameView, attribute: .height, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
             self.gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
             let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
+            gestureRecognizer.minimumPressDuration = 0.1
             button.addGestureRecognizer(gestureRecognizer)
         }
         
@@ -80,15 +81,17 @@ class ViewController: UIViewController {
         }
         
         self.resetButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.resetButton)
-        self.view.addConstraints([NSLayoutConstraint(item: self.resetButton, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0), NSLayoutConstraint(item: self.resetButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)])
+        self.navigationController!.toolbar.addSubview(self.resetButton)
+        self.navigationController!.toolbar.addConstraints([NSLayoutConstraint(item: self.resetButton, attribute: .centerY, relatedBy: .equal, toItem: self.navigationController!.toolbar, attribute: .centerY, multiplier: 1, constant: 0), NSLayoutConstraint(item: self.resetButton, attribute: .centerX, relatedBy: .equal, toItem: self.navigationController!.toolbar, attribute: .centerX, multiplier: 1, constant: 0)])
         self.resetButton.addTarget(self, action: #selector(initializeGame), for: .touchUpInside)
+        self.resetButton.titleLabel!.font = UIFont.systemFont(ofSize: 18)
         
         self.helpButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.helpButton)
-        self.view.addConstraints([NSLayoutConstraint(item: self.helpButton, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0), NSLayoutConstraint(item: self.helpButton, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1, constant: 0)])
+        self.navigationController!.toolbar.addSubview(self.helpButton)
+        self.navigationController!.toolbar.addConstraints([NSLayoutConstraint(item: self.helpButton, attribute: .centerY, relatedBy: .equal, toItem: self.navigationController!.toolbar, attribute: .centerY, multiplier: 1, constant: 0), NSLayoutConstraint(item: self.helpButton, attribute: .right, relatedBy: .equal, toItem: self.navigationController!.toolbar, attribute: .right, multiplier: 1, constant: 0)])
         self.helpButton.addTarget(self, action: #selector(didTapHelpButton), for: .touchUpInside)
         self.helpButton.setTitle("?", for: UIControlState())
+        self.helpButton.titleLabel!.font = UIFont.systemFont(ofSize: 18)
     }
     
     /// Loads a new game.
