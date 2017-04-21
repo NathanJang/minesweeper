@@ -112,11 +112,15 @@ class ViewController: UIViewController {
                     markCell(self.cells[MinesweeperGame.size * i + j])
                 } else {
                     // Non-revealed buttons show "-".
-                    self.cells[MinesweeperGame.size * i + j].setTitle("-", for: UIControlState())
+                    DispatchQueue.main.async {
+                        self.cells[MinesweeperGame.size * i + j].setTitle("-", for: UIControlState())
+                    }
                 }
             }
         }
-        self.resetButton.setTitle(MinesweeperGame.currentGame!.isFinished ? "New Game" : "Reset", for: UIControlState())
+        DispatchQueue.main.async {
+            self.resetButton.setTitle(MinesweeperGame.currentGame!.isFinished ? "New Game" : "Reset", for: UIControlState())
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -149,7 +153,9 @@ class ViewController: UIViewController {
             // If the revealed cell has a mine, lose.
             if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
                 MinesweeperGame.currentGame!.endDate = Date()
-                self.showAlert(won: false, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
+                DispatchQueue.main.async {
+                    self.showAlert(won: false, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
+                }
                 // Reveal all other non-mine cells.
                 // Only this mined cell is revealed so it is highlighted which mined cell the user tapped that caused the loss.
                 for i in 0..<MinesweeperGame.size {
@@ -164,8 +170,10 @@ class ViewController: UIViewController {
                     }
                 }
                 MinesweeperGame.currentGame!.isFinished = true
-                self.resetButton.setTitle("New Game", for: UIControlState())
-                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                DispatchQueue.main.async {
+                    self.resetButton.setTitle("New Game", for: UIControlState())
+                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                }
             } else {
                 // If a cell has 0 mines nearby, recursively reveal the surrounding cells.
                 if MinesweeperGame.currentGame!.numberOfMinesNear(row: i, column: j)! == 0 {
@@ -208,7 +216,9 @@ class ViewController: UIViewController {
                 MinesweeperGame.currentGame!.won = true
                 MinesweeperGame.currentGame!.endDate = Date()
                 self.showAlert(won: true, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
-                self.resetButton.setTitle("New Game", for: UIControlState())
+                DispatchQueue.main.async {
+                    self.resetButton.setTitle("New Game", for: UIControlState())
+                }
                 for i in 0..<MinesweeperGame.size {
                     for j in 0..<MinesweeperGame.size {
                         if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! && !MinesweeperGame.currentGame!.markedCells[i][j] {
@@ -222,17 +232,19 @@ class ViewController: UIViewController {
     }
     
     func didTapHelpButton() {
-        let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
-        let title = "Minsweeper \(version)"
-        let message = "The goal is to clear the minefield. Tap on all the cells that don't contain a mine. Tap and hold to mark mines. The numbers represent how many of the cells around a cell contain a mine. If you tap on a mine, you lose!"
-        if #available(iOS 8.0, *) {
-            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
-        } else {
-            let alertView = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: "OK")
-            alertView.alertViewStyle = .default
-            alertView.show()
+        DispatchQueue.main.async {
+            let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+            let title = "Minsweeper \(version)"
+            let message = "The goal is to clear the minefield. Tap on all the cells that don't contain a mine. Tap and hold to mark mines. The numbers represent how many of the cells around a cell contain a mine. If you tap on a mine, you lose!"
+            if #available(iOS 8.0, *) {
+                let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+            } else {
+                let alertView = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: "OK")
+                alertView.alertViewStyle = .default
+                alertView.show()
+            }
         }
     }
     
@@ -246,17 +258,19 @@ class ViewController: UIViewController {
     }
     
     func markCell(_ button: UIButton) {
-        let i = button.tag / MinesweeperGame.size
-        let j = button.tag % MinesweeperGame.size
-        if !MinesweeperGame.currentGame!.revealedCells[i][j] {
-            button.setTitle(MinesweeperGame.currentGame!.markedCells[i][j] ? "-" : "X", for: UIControlState())
-            MinesweeperGame.currentGame!.markedCells[i][j] = !MinesweeperGame.currentGame!.markedCells[i][j]
-        }
-        
-        if #available(iOS 10.0, *) {
-            UIImpactFeedbackGenerator().impactOccurred()
-        } else {
-            // Fallback on earlier versions
+        DispatchQueue.main.async {
+            let i = button.tag / MinesweeperGame.size
+            let j = button.tag % MinesweeperGame.size
+            if !MinesweeperGame.currentGame!.revealedCells[i][j] {
+                button.setTitle(MinesweeperGame.currentGame!.markedCells[i][j] ? "-" : "X", for: UIControlState())
+                MinesweeperGame.currentGame!.markedCells[i][j] = !MinesweeperGame.currentGame!.markedCells[i][j]
+            }
+            
+            if #available(iOS 10.0, *) {
+                UIImpactFeedbackGenerator().impactOccurred()
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     
@@ -265,52 +279,58 @@ class ViewController: UIViewController {
         let i = button.tag / MinesweeperGame.size
         let j = button.tag % MinesweeperGame.size
         if !MinesweeperGame.currentGame!.revealedCells[i][j] {
-            if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
-                button.setTitle("!!", for: UIControlState())
-            } else {
-                let numberOfMinesNearby = MinesweeperGame.currentGame!.numberOfMinesNear(row: i, column: j)!
-                button.setTitle(numberOfMinesNearby > 0 ? "\(numberOfMinesNearby)" : "", for: UIControlState())
+            DispatchQueue.main.async {
+                if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
+                    button.setTitle("!!", for: UIControlState())
+                } else {
+                    let numberOfMinesNearby = MinesweeperGame.currentGame!.numberOfMinesNear(row: i, column: j)!
+                    button.setTitle(numberOfMinesNearby > 0 ? "\(numberOfMinesNearby)" : "", for: UIControlState())
+                }
+                MinesweeperGame.currentGame!.revealedCells[i][j] = true
+                MinesweeperGame.currentGame!.numberOfRemainingCells -= 1
             }
-            MinesweeperGame.currentGame!.revealedCells[i][j] = true
-            MinesweeperGame.currentGame!.numberOfRemainingCells -= 1
         }
     }
     
     func showAlert(won: Bool, formattedDuration: String) {
-        if #available(iOS 8.0, *) {
-            let alert = UIAlertController(title: won ? "You've won!" : "You've lost!", message: formattedDuration, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "New Game", style: .default) { _ in
-                self.initializeGame()
-            })
-            alert.addAction(UIAlertAction(title: "Share", style: .default) { _ in
-                self.showActivityController(won: won, formattedDuration: formattedDuration)
-            })
-            alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        } else {
-            let alertView = UIAlertView(title: won ? "You've won!" : "You've lost!", message: formattedDuration, delegate: self, cancelButtonTitle: "Done", otherButtonTitles: "New Game", "Share")
-            alertView.alertViewStyle = .default
-            alertView.show()
+        DispatchQueue.main.async {
+            if #available(iOS 8.0, *) {
+                let alert = UIAlertController(title: won ? "You've won!" : "You've lost!", message: formattedDuration, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "New Game", style: .default) { _ in
+                    self.initializeGame()
+                })
+                alert.addAction(UIAlertAction(title: "Share", style: .default) { _ in
+                    self.showActivityController(won: won, formattedDuration: formattedDuration)
+                })
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alertView = UIAlertView(title: won ? "You've won!" : "You've lost!", message: formattedDuration, delegate: self, cancelButtonTitle: "Done", otherButtonTitles: "New Game", "Share")
+                alertView.alertViewStyle = .default
+                alertView.show()
+            }
         }
     }
     
     func showActivityController(won: Bool, formattedDuration: String) {
-        let message = "I just \(won ? "won" : "lost") a game of Minsweeper in \(formattedDuration)!"
-        let URL = Foundation.URL(string: "https://appsto.re/us/qy64bb.i")!
-        let image = self.imageOfGameView()
-        let activityViewController = UIActivityViewController(activityItems: [message, URL, image], applicationActivities: nil)
-        activityViewController.excludedActivityTypes = [UIActivityType.addToReadingList]
-        // Show the alert again once user is done sharing.
-        if #available(iOS 8.0, *) {
-            activityViewController.completionWithItemsHandler = {(_, _, _, _) -> Void in
-                self.showAlert(won: won, formattedDuration: formattedDuration)
+        DispatchQueue.main.async {
+            let message = "I just \(won ? "won" : "lost") a game of Minsweeper in \(formattedDuration)!"
+            let URL = Foundation.URL(string: "https://appsto.re/us/qy64bb.i")!
+            let image = self.imageOfGameView()
+            let activityViewController = UIActivityViewController(activityItems: [message, URL, image], applicationActivities: nil)
+            activityViewController.excludedActivityTypes = [UIActivityType.addToReadingList]
+            // Show the alert again once user is done sharing.
+            if #available(iOS 8.0, *) {
+                activityViewController.completionWithItemsHandler = {(_, _, _, _) -> Void in
+                    self.showAlert(won: won, formattedDuration: formattedDuration)
+                }
+            } else {
+                activityViewController.completionHandler = {(_, _) -> Void in
+                    self.showAlert(won: won, formattedDuration: formattedDuration)
+                }
             }
-        } else {
-            activityViewController.completionHandler = {(_, _) -> Void in
-                self.showAlert(won: won, formattedDuration: formattedDuration)
-            }
+            self.present(activityViewController, animated: true, completion: nil)
         }
-        self.present(activityViewController, animated: true, completion: nil)
     }
     
     func imageOfGameView() -> UIImage {
