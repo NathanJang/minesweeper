@@ -317,7 +317,7 @@ class ViewController: UIViewController {
     func showActivityController(won: Bool, formattedDuration: String) {
         DispatchQueue.main.async {
             let message = "I just \(won ? "won" : "lost") a game of Minsweeper in \(formattedDuration)!"
-            let URL = Foundation.URL(string: "https://appsto.re/us/qy64bb.i")!
+            let URL = Foundation.URL(string: "https://appstore.com/minsweeper")!
             let image = self.imageOfGameView()
             let activityViewController = UIActivityViewController(activityItems: [message, URL, image], applicationActivities: nil)
             activityViewController.excludedActivityTypes = [UIActivityType.addToReadingList]
