@@ -252,6 +252,12 @@ class ViewController: UIViewController {
             button.setTitle(MinesweeperGame.currentGame!.markedCells[i][j] ? "-" : "X", for: UIControlState())
             MinesweeperGame.currentGame!.markedCells[i][j] = !MinesweeperGame.currentGame!.markedCells[i][j]
         }
+        
+        if #available(iOS 10.0, *) {
+            UIImpactFeedbackGenerator().impactOccurred()
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     /// Reveal a single cell.
