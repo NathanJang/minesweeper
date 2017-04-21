@@ -279,16 +279,18 @@ class ViewController: UIViewController {
         let i = button.tag / MinesweeperGame.size
         let j = button.tag % MinesweeperGame.size
         if !MinesweeperGame.currentGame!.revealedCells[i][j] {
-            DispatchQueue.main.async {
-                if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
+            if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
+                DispatchQueue.main.async {
                     button.setTitle("!!", for: UIControlState())
-                } else {
+                }
+            } else {
+                DispatchQueue.main.async {
                     let numberOfMinesNearby = MinesweeperGame.currentGame!.numberOfMinesNear(row: i, column: j)!
                     button.setTitle(numberOfMinesNearby > 0 ? "\(numberOfMinesNearby)" : "", for: UIControlState())
                 }
-                MinesweeperGame.currentGame!.revealedCells[i][j] = true
-                MinesweeperGame.currentGame!.numberOfRemainingCells -= 1
             }
+            MinesweeperGame.currentGame!.revealedCells[i][j] = true
+            MinesweeperGame.currentGame!.numberOfRemainingCells -= 1
         }
     }
     
