@@ -254,7 +254,7 @@ class ViewController: UIViewController {
             let message = "The goal is to clear the minefield. Tap on all the cells that don't contain a mine. Tap and hold to mark mines. The numbers represent how many of the cells around a cell contain a mine. If you tap on a mine, you lose!"
             if #available(iOS 8.0, *) {
                 let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
                 self.present(alertController, animated: true, completion: nil)
             } else {
                 let alertView = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: "OK")
@@ -328,7 +328,7 @@ class ViewController: UIViewController {
                 alert.addAction(UIAlertAction(title: "Share", style: .default) { _ in
                     self.showActivityController(won: won, formattedDuration: formattedDuration)
                 })
-                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             } else {
                 let alertView = UIAlertView(title: won ? "You've won!" : "You've lost!", message: formattedDuration, delegate: self, cancelButtonTitle: "Done", otherButtonTitles: "New Game", "Share")

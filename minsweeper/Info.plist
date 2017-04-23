@@ -36,5 +36,16 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>me.jonathanchan.minsweeper.new-game</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>New Game</string>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeAdd</string>
+		</dict>
+	</array>
 </dict>
 </plist>

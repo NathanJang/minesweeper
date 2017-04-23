@@ -60,6 +60,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    @available(iOS 9.0, *)
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        if shortcutItem.type == "me.jonathanchan.minsweeper.new-game" {
+            MinesweeperGame.currentGame = nil
+            if let viewController = (window!.rootViewController as! UINavigationController).viewControllers.first as? ViewController {
+                viewController.initializeGame()
+            }
+            completionHandler(true)
+        } else {
+            completionHandler(false)
+        }
+    }
 
 }
 
