@@ -23,6 +23,13 @@ class ViewController: UIViewController {
     /// The superview for all game cells, a square with the same width as `self.view` and centered.
     let gameView = UIView()
 
+    let helpLabel = { () -> UILabel in 
+        let helpLabel = UILabel()
+        helpLabel.text = "Tap to clear, Tap and Hold to mark"
+        helpLabel.font = UIFont.systemFont(ofSize: 12)
+        return helpLabel
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -42,6 +49,7 @@ class ViewController: UIViewController {
         // Initialize buttons and store in `self.buttons`.
         for i in 0..<MinesweeperGame.size * MinesweeperGame.size {
             let button = UIButton(type: .system)
+            button.titleLabel!.font = UIFont.systemFont(ofSize: 18)
             button.tag = i
             self.cells.append(button)
             button.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +74,7 @@ class ViewController: UIViewController {
             heightConstraint = NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: self.gameView, attribute: .height, multiplier: 1 / CGFloat(MinesweeperGame.size), constant: 0)
             self.gameView.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
             let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
-            gestureRecognizer.minimumPressDuration = 0.1
+            gestureRecognizer.minimumPressDuration = 0.2
             button.addGestureRecognizer(gestureRecognizer)
         }
         
@@ -74,7 +82,7 @@ class ViewController: UIViewController {
             initializeGame()
         } else {
             // Start the time immediately if the game was already started before.
-            if MinesweeperGame.currentGame!.isStarted {
+            if MinesweeperGame.currentGame!.isStarted && !MinesweeperGame.currentGame!.isFinished {
                 MinesweeperGame.currentGame!.startDate = Date()
             }
             configureCells()
@@ -92,6 +100,10 @@ class ViewController: UIViewController {
         self.helpButton.addTarget(self, action: #selector(didTapHelpButton), for: .touchUpInside)
         self.helpButton.setTitle("?", for: UIControlState())
         self.helpButton.titleLabel!.font = UIFont.systemFont(ofSize: 18)
+
+        self.helpLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(helpLabel)
+        self.view.addConstraints([NSLayoutConstraint(item: helpLabel, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -navigationController!.toolbar.frame.height - 10), NSLayoutConstraint(item: helpLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0)])
     }
     
     /// Loads a new game.
@@ -116,7 +128,8 @@ class ViewController: UIViewController {
                 } else {
                     // Non-revealed buttons show "-".
                     DispatchQueue.main.async {
-                        self.cells[MinesweeperGame.size * i + j].setTitle("-", for: UIControlState())
+                        let cell = self.cells[MinesweeperGame.size * i + j]
+                        cell.setTitle("-", for: UIControlState())
                     }
                 }
             }
@@ -237,7 +250,7 @@ class ViewController: UIViewController {
     func didTapHelpButton() {
         DispatchQueue.main.async {
             let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
-            let title = "Minsweeper \(version)"
+            let title = "Minsweeper \(version)\nby Jonathan Chan"
             let message = "The goal is to clear the minefield. Tap on all the cells that don't contain a mine. Tap and hold to mark mines. The numbers represent how many of the cells around a cell contain a mine. If you tap on a mine, you lose!"
             if #available(iOS 8.0, *) {
                 let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -254,25 +267,34 @@ class ViewController: UIViewController {
     func onLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
             let button = sender.view as! UIButton
-            if !MinesweeperGame.currentGame!.isFinished {
-                self.markCell(button)
+            let i = button.tag / MinesweeperGame.size
+            let j = button.tag % MinesweeperGame.size
+            if !MinesweeperGame.currentGame!.isFinished && !MinesweeperGame.currentGame!.revealedCells[i][j] {
+                self.markCell(button, withHapticFeedback: true)
             }
+        } else if sender.state == .possible, #available(iOS 10.0, *) {
+            UIFeedbackGenerator().prepare()
         }
     }
     
-    func markCell(_ button: UIButton) {
+    func markCell(_ button: UIButton, withHapticFeedback shouldProvideHapticFeedback: Bool = false) {
         DispatchQueue.main.async {
             let i = button.tag / MinesweeperGame.size
             let j = button.tag % MinesweeperGame.size
+            let isMarked = MinesweeperGame.currentGame!.markedCells[i][j]
+            let isRevealed = MinesweeperGame.currentGame!.revealedCells[i][j]
             if !MinesweeperGame.currentGame!.revealedCells[i][j] {
-                button.setTitle(MinesweeperGame.currentGame!.markedCells[i][j] ? "-" : "X", for: UIControlState())
+                button.setTitle(isMarked ? "-" : "X", for: UIControlState())
                 MinesweeperGame.currentGame!.markedCells[i][j] = !MinesweeperGame.currentGame!.markedCells[i][j]
             }
-            
-            if #available(iOS 10.0, *) {
-                UIImpactFeedbackGenerator().impactOccurred()
-            } else {
-                // Fallback on earlier versions
+
+            if shouldProvideHapticFeedback && !isRevealed {
+                if #available(iOS 10.0, *) {
+                    UIImpactFeedbackGenerator().impactOccurred()
+                } else {
+                    // Fallback on earlier versions
+                    AudioServicesPlaySystemSound(1519)
+                }
             }
         }
     }
@@ -339,11 +361,21 @@ class ViewController: UIViewController {
     }
     
     func imageOfGameView() -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(self.gameView.frame.size, false, 0)
+        let imageSize = CGSize(width: self.gameView.frame.width, height: self.gameView.frame.height + 45)
+        let imageRect = CGRect(origin: .zero, size: imageSize)
+        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
+        UIColor.white.setFill()
+        UIRectFill(imageRect)
         self.gameView.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
+        let textAttributes: [String: Any] = [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 15),
+            NSParagraphStyleAttributeName: { let style = NSMutableParagraphStyle(); style.alignment = .center; return style }(),
+        ]
+        let text = NSString(string: "Minsweeper game\n\(MinesweeperGame.currentGame!.won ? "won" : "lost") in \(MinesweeperGame.currentGame!.formattedDuration())")
+        text.draw(in: CGRect(origin: CGPoint(x: 0, y: self.gameView.frame.height), size: imageSize), withAttributes: textAttributes)
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        return image!
+        return image
     }
 }
 
