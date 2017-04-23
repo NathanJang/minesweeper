@@ -11,6 +11,7 @@ import Foundation
 /// An object of the game state.
 /// Conforms to `NSCoding` because the game state persists between launches.
 class MinesweeperGame: NSObject, NSCoding {
+
     static var currentGame: MinesweeperGame?
     
     static let size = 9
@@ -185,4 +186,5 @@ class MinesweeperGame: NSObject, NSCoding {
             timeOffset: aDecoder.decodeDouble(forKey: "timeOffset")
         )
     }
+
 }

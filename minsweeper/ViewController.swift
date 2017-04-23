@@ -293,7 +293,6 @@ class ViewController: UIViewController {
                     UIImpactFeedbackGenerator().impactOccurred()
                 } else {
                     // Fallback on earlier versions
-                    AudioServicesPlaySystemSound(1519)
                 }
             }
         }
@@ -377,10 +376,12 @@ class ViewController: UIViewController {
         UIGraphicsEndImageContext()
         return image
     }
+
 }
 
 // For backwards compatibility with iOS 7
 extension ViewController: UIAlertViewDelegate {
+
     func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
         // If "New Game" is clicked
         if buttonIndex == 1 {
@@ -389,4 +390,5 @@ extension ViewController: UIAlertViewDelegate {
             self.showActivityController(won: MinesweeperGame.currentGame!.won, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
         }
     }
+    
 }
