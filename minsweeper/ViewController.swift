@@ -341,9 +341,9 @@ class ViewController: UIViewController {
     func showActivityController(won: Bool, formattedDuration: String) {
         DispatchQueue.main.async {
             let message = "I just \(won ? "won" : "lost") a game of Minsweeper in \(formattedDuration)!"
-            let URL = Foundation.URL(string: "https://appstore.com/minsweeper")!
+            let url = URL(string: "https://appsto.re/us/7dqrjb.i")!
             let image = self.imageOfGameView()
-            let activityViewController = UIActivityViewController(activityItems: [message, URL, image], applicationActivities: nil)
+            let activityViewController = UIActivityViewController(activityItems: [message, url, image], applicationActivities: nil)
             activityViewController.excludedActivityTypes = [UIActivityType.addToReadingList]
             // Show the alert again once user is done sharing.
             if #available(iOS 8.0, *) {
