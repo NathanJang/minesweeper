@@ -155,6 +155,9 @@ class ViewController: UIViewController {
             MinesweeperGame.currentGame!.isStarted = true
             MinesweeperGame.currentGame!.startDate = Date()
         }
+        if #available(iOS 10.0, *) {
+            UIFeedbackGenerator().prepare()
+        }
         self.revealNeighboringCells(sender)
     }
 
