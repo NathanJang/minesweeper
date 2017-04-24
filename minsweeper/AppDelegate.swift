@@ -66,6 +66,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             MinesweeperGame.currentGame = nil
             if let viewController = (window!.rootViewController as! UINavigationController).viewControllers.first as? ViewController {
                 viewController.initializeGame()
+                if let presentedViewController = viewController.presentedViewController {
+                    presentedViewController.dismiss(animated: false, completion: nil)
+                }
             }
             completionHandler(true)
         } else {
