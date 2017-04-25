@@ -92,6 +92,7 @@ class ViewController: UIViewController {
         self.navigationController!.toolbar.addSubview(self.resetButton)
         self.navigationController!.toolbar.addConstraints([NSLayoutConstraint(item: self.resetButton, attribute: .centerY, relatedBy: .equal, toItem: self.navigationController!.toolbar, attribute: .centerY, multiplier: 1, constant: 0), NSLayoutConstraint(item: self.resetButton, attribute: .centerX, relatedBy: .equal, toItem: self.navigationController!.toolbar, attribute: .centerX, multiplier: 1, constant: 0)])
         self.resetButton.addTarget(self, action: #selector(initializeGame), for: .touchUpInside)
+        self.resetButton.setTitle("New Game", for: UIControlState())
         self.resetButton.titleLabel!.font = UIFont.systemFont(ofSize: 18)
         
         self.helpButton.translatesAutoresizingMaskIntoConstraints = false
@@ -134,8 +135,12 @@ class ViewController: UIViewController {
                 }
             }
         }
-        DispatchQueue.main.async {
-            self.resetButton.setTitle(MinesweeperGame.currentGame!.isFinished ? "New Game" : "Reset", for: UIControlState())
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let currentGame = MinesweeperGame.currentGame, currentGame.isFinished {
+            self.showAlert(won: currentGame.won, formattedDuration: currentGame.formattedDuration())
         }
     }
 
@@ -190,7 +195,6 @@ class ViewController: UIViewController {
                 }
                 MinesweeperGame.currentGame!.isFinished = true
                 DispatchQueue.main.async {
-                    self.resetButton.setTitle("New Game", for: UIControlState())
                     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                 }
             } else {
@@ -235,9 +239,6 @@ class ViewController: UIViewController {
                 MinesweeperGame.currentGame!.won = true
                 MinesweeperGame.currentGame!.endDate = Date()
                 self.showAlert(won: true, formattedDuration: MinesweeperGame.currentGame!.formattedDuration())
-                DispatchQueue.main.async {
-                    self.resetButton.setTitle("New Game", for: UIControlState())
-                }
                 for i in 0..<MinesweeperGame.size {
                     for j in 0..<MinesweeperGame.size {
                         if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! && !MinesweeperGame.currentGame!.markedCells[i][j] {
@@ -286,8 +287,13 @@ class ViewController: UIViewController {
             let j = button.tag % MinesweeperGame.size
             let isMarked = MinesweeperGame.currentGame!.markedCells[i][j]
             let isRevealed = MinesweeperGame.currentGame!.revealedCells[i][j]
-            if !MinesweeperGame.currentGame!.revealedCells[i][j] {
-                button.setTitle(isMarked ? "-" : "X", for: UIControlState())
+            if !isRevealed {
+                let title: String
+                if isMarked { title = "-" }
+                else if let detonatedMineTag = MinesweeperGame.currentGame!.detonatedMineTag, detonatedMineTag == button.tag {
+                    title = "!!"
+                } else { title = "X" }
+                button.setTitle(title, for: UIControlState())
                 MinesweeperGame.currentGame!.markedCells[i][j] = !MinesweeperGame.currentGame!.markedCells[i][j]
             }
 
@@ -307,6 +313,7 @@ class ViewController: UIViewController {
         let j = button.tag % MinesweeperGame.size
         if !MinesweeperGame.currentGame!.revealedCells[i][j] {
             if MinesweeperGame.currentGame!.hasMine(row: i, column: j)! {
+                MinesweeperGame.currentGame!.detonatedMineTag = button.tag
                 DispatchQueue.main.async {
                     button.setTitle("!!", for: UIControlState())
                 }

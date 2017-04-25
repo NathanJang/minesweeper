@@ -28,6 +28,7 @@ class MinesweeperGame: NSObject, NSCoding {
     var isStarted = false
     var isFinished = false
     var won = false
+    var detonatedMineTag: Int?
     
     fileprivate var mineField: [[Bool]]
     var revealedCells: [[Bool]]
@@ -70,7 +71,7 @@ class MinesweeperGame: NSObject, NSCoding {
         print()
     }
     
-    fileprivate init(isStarted: Bool, isFinished: Bool, mineField: [[Bool]], revealedCells: [[Bool]], markedCells: [[Bool]], timeOffset: TimeInterval) {
+    fileprivate init(isStarted: Bool, isFinished: Bool, mineField: [[Bool]], revealedCells: [[Bool]], markedCells: [[Bool]], detonatedMineTag: Int?, timeOffset: TimeInterval) {
         // `self.numberOfRemainingCells` is left equal to the default `size * size` because if we're initting from here, it's from a previous game and that will be recalculated by the VC.
         self.isStarted = isStarted
         self.isFinished = isFinished
@@ -170,9 +171,11 @@ class MinesweeperGame: NSObject, NSCoding {
         aCoder.encode(self.revealedCells, forKey: "revealedCells")
         aCoder.encode(self.markedCells, forKey: "markedCells")
         aCoder.encode(self.timeOffset, forKey: "timeOffset")
+        aCoder.encode(detonatedMineTag, forKey: "detonatedMineTag")
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
+        let detonatedMineTag = aDecoder.decodeObject(forKey: "detonatedMineTag") as? Int
         guard let mineField = aDecoder.decodeObject(forKey: "mineField") as? [[Bool]],
             let revealedCells = aDecoder.decodeObject(forKey: "revealedCells") as? [[Bool]],
             let markedCells = aDecoder.decodeObject(forKey: "markedCells") as? [[Bool]]
@@ -183,6 +186,7 @@ class MinesweeperGame: NSObject, NSCoding {
             mineField: mineField,
             revealedCells: revealedCells,
             markedCells: markedCells,
+            detonatedMineTag: detonatedMineTag,
             timeOffset: aDecoder.decodeDouble(forKey: "timeOffset")
         )
     }
